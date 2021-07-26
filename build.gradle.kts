@@ -1,4 +1,16 @@
+plugins {
+    kotlin("jvm") apply false
+    kotlin("multiplatform") apply false
+}
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "ru.kotlin.paraglider.vbaa"
+version = "0.0.1"
 
+subprojects {
+    group = rootProject.group
+    version = rootProject.version
+
+    repositories{
+        mavenCentral()
+    }
+}
