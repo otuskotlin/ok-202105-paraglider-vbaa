@@ -1,0 +1,249 @@
+openapi: 3.0.3
+info:
+  title: Paragliding schools marketplace
+  description: 'App for those who want start learning paragliding or continue.
+  One can find there schools, instructors, trips, all necessary services and equipment
+  for paragliding.'
+  license:
+    name: MIT
+  version: 0.0.1
+servers:
+  - url: 'https://localhost:8080'
+tags:
+  - name: School
+    description: school CRUDS
+#  - name: Instructor
+#    description: instructor CRUDS
+#  - name: Service
+#    description: service CRUDS
+  - name: Trip
+    description: trip CRUDS
+
+paths:
+  #school CRUDS
+  /school/create:
+    post:
+      tags:
+        - School
+      summary: create new school
+      operationId: saveSchool
+      requestBody:
+        description: School object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSchoolRequest'
+        required: true
+      responses:
+        200:
+          description: School created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSchoolResponse'
+
+  /school/{schoolId}:
+    get:
+      tags:
+        - School
+      summary: get school by id
+      operationId: getSchoolById
+      parameters:
+        - name: schoolId
+          in: path
+          description: ID of school
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: School created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSchoolResponse'
+    post:
+      tags:
+        - School
+      summary: get school by id
+      operationId: getSchoolById
+      parameters:
+        - name: schoolId
+          in: path
+          description: ID of school
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: School object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSchoolRequest'
+        required: true
+      responses:
+        204:
+          description: Updated successfull
+          content: {}
+
+components:
+  schemas:
+
+    #
+    #    HELPER OBJECTS
+    #
+
+    BaseMessage:
+      type: object
+      properties:
+        messageType:
+          type: string
+      discriminator:
+        propertyName: messageType
+
+    BaseRequest:
+      type: object
+      properties:
+        requestId:
+          type: string
+        debug:
+          $ref: '#/components/schemas/Debug'
+
+    BaseResponse:
+      type: object
+      properties:
+        result:
+          type: string
+          enum:
+            - success
+            - failed
+        erros:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiError'
+
+    ApiError:
+      type: object
+      properties:
+        message:
+          type: string
+        field:
+          type: string
+
+
+    Debug:
+      type: object
+      properties:
+        mode:
+          type: string
+          default:
+            - prod
+          enum:
+            - prod
+            - test
+            - stub
+        stub:
+          type: string
+
+    #
+    #    SCHOOL CRUD
+    #
+
+    School:
+      type: object
+      properties:
+        name:
+          type: string
+        welcomeVideoUrl:
+          type: string
+        shortInfo:
+          type: string
+        #          change to Object
+        location:
+          type: string
+        #        change to Entity (one to many schools)
+        instructorList:
+          type: array
+          items:
+            type: string
+        # change to Object
+        contactInfo:
+          type: string
+        #        change to list of Services (Entity, one to many)
+        serviceBasicInfo:
+          type: string
+
+    CreateSchoolRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            school:
+              $ref: '#/components/schemas/School'
+            debug:
+              type: object
+              properties:
+                stub:
+                  type: string
+                  enum:
+                    - success
+                    - errorDb
+                    - fieldsEmpty
+
+    CreateSchoolResponse:
+      type: object
+
+    GetSchoolRequest:
+      type: object
+    GetSchoolResponse:
+      type: object
+
+    UpdateSchoolRequest:
+      type: object
+
+    #    school deleting is for admins only
+    DeleteSchoolRequest:
+      type: object
+      properties:
+        schoolId:
+          type: string
+
+
+#
+#   TRIP CRUD
+#
+    Trip:
+      type: object
+      properties:
+        location:
+          type: string
+          description: город, страна
+        photoUrl:
+          type: string
+          description: красивое фото с кэмпа для отображения в карусели
+        videoUrl:
+          type: string
+          description: видео прошлого кэмпа, если есть
+#        change to Object with price differences
+        shortInfo:
+          type: string
+          description: краткое описание, что где куда
+        campDates:
+          type: string
+          description: летные дни кэмпа
+        equipmentNeeded:
+          type: boolean
+          description: включать аренду снаряжения на даты кэмп
+        recommendedFlightDates:
+          type: string
+          description: рекомендованные даты поездки
+        price:
+          type: integer
+          description: стоимость в евро
+
+
+
+
