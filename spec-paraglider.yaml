@@ -20,8 +20,11 @@ tags:
     description: trip CRUDS
 
 paths:
+  # TODO init needed for WeSocket
+#  /school/init
+
   #school CRUDS
-  /school/create:
+  /school:
     post:
       tags:
         - School
@@ -194,7 +197,14 @@ components:
                     - fieldsEmpty
 
     CreateSchoolResponse:
-      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            createdSchool:
+              $ref: '#/components/schemas/ResultSchool'
+
 
     GetSchoolRequest:
       type: object
@@ -203,8 +213,38 @@ components:
 
     UpdateSchoolRequest:
       type: object
+      properties:
+        schoolId:
+          type: string
 
-    #    school deleting is for admins only
+    UpdateSchool:
+      allOf:
+        - $ref: '#/components/schemas/School'
+        - type: object
+          properties:
+            schoolId:
+              type: string
+
+    CommonPermissions:
+      type: string
+      enum:
+        - read
+        - update
+        - delete
+        - create
+
+    ResultSchool:
+      allOf:
+        - $ref: '#/components/schemas/UpdateSchool'
+        - type: object
+          properties:
+            permissions:
+              type: array
+              items:
+                $ref: '#/components/schemas/CommonPermissions'
+
+
+        #    school deleting is for admins only
     DeleteSchoolRequest:
       type: object
       properties:
