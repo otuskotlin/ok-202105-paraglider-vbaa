@@ -66,8 +66,8 @@ paths:
     post:
       tags:
         - School
-      summary: get school by id
-      operationId: getSchoolById
+      summary: Update school by id
+      operationId: updateSchoolById
       parameters:
         - name: schoolId
           in: path
@@ -138,8 +138,7 @@ components:
       properties:
         mode:
           type: string
-          default:
-            - prod
+          default: prod
           enum:
             - prod
             - test
