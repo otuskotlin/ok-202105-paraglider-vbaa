@@ -1,6 +1,8 @@
 plugins {
     kotlin("jvm") apply false
     kotlin("multiplatform") apply false
+
+    id("org.openapi.generator") apply false
 }
 
 group = "ru.kotlin.paraglider.vbaa"
