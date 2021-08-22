@@ -25,6 +25,25 @@ paths:
 
   #school CRUDS
   /school:
+    get:
+      tags:
+        - School
+      summary: get school list by id
+      operationId: getSchoolListById
+      requestBody:
+        description: GetSchoolRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSchoolRequest'
+        required: true
+      responses:
+        200:
+          description: School created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSchoolResponse'
     post:
       tags:
         - School
@@ -44,43 +63,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateSchoolResponse'
-
-  /school/{schoolId}:
-    get:
-      tags:
-        - School
-      summary: get school by id
-      operationId: getSchoolById
-      parameters:
-        - name: schoolId
-          in: path
-          description: ID of school
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: School created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSchoolResponse'
-    post:
+    put:
       tags:
         - School
       summary: update school by id
       operationId: UpdateSchoolById
-      parameters:
-        - name: schoolId
-          in: path
-          description: ID of school
-          required: true
-          schema:
-            type: integer
-            format: int64
       requestBody:
-        description: School object
+        description: UpdateSchoolRequest object
         content:
           application/json:
             schema:
@@ -88,23 +77,106 @@ paths:
         required: true
       responses:
         204:
-          description: Updated successfully
-          content: { }
+          description: School updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateSchoolResponse'
     delete:
       summary: delete school by id
       operationId: DeleteSchoolById
-      parameters:
-        - name: schoolId
-          in: path
-          description: ID of school
-          required: true
-          schema:
-            type: integer
-            format: int64
+      requestBody:
+        description: DeleteSchoolRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteSchoolRequest'
+        required: true
       responses:
         204:
-          description: Deleted successfully
-          content: { }
+          description: School deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteSchoolResponse'
+
+   #trip CRUDS
+  /trip:
+    get:
+      tags:
+        - Trip
+      summary: get trip list by id
+      operationId: getTripListById
+      requestBody:
+        description: GetTripRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTripRequest'
+        required: true
+      responses:
+        200:
+          description: Trip created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTripResponse'
+    post:
+      tags:
+        - Trip
+      summary: save new trip
+      operationId: saveTrip
+      requestBody:
+        description: CreateTripRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTripRequest'
+        required: true
+      responses:
+        200:
+          description: Trip created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTripResponse'
+    put:
+      tags:
+        - School
+      summary: update trip by id
+      operationId: UpdateTripById
+      requestBody:
+        description: UpdateTripRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTripRequest'
+        required: true
+      responses:
+        204:
+          description: Trip updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateTripResponse'
+    delete:
+      summary: delete trip by id
+      operationId: DeleteTripById
+      requestBody:
+        description: DeleteTripRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTripRequest'
+        required: true
+      responses:
+        204:
+          description: Trip deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteTripResponse'
+
 
 components:
   schemas:
@@ -178,10 +250,10 @@ components:
         - delete
         - create
 
-    #TODO Base Search Request filters
+    #TODO BasePageRequest/Response (filters)
 
     #
-    #    SCHOOL CRUD
+    #    SCHOOL
     #
 
     School:
@@ -193,27 +265,118 @@ components:
         welcomeVideoUrl:
           description: Welcome-видео школы
           type: string
+        headOfSchool:
+          $ref: '#/components/schemas/Instructor'
         shortInfo:
           description: Краткая информация, история школы
           type: string
-        #          change to Object
         location:
-          description: Адрес школы
-          type: string
-        #        change to Entity (one to many schools)
+          $ref: '#/components/schemas/Location'
         instructorList:
           description: Список инструкторов
           type: array
           items:
-            type: string
-        # change to Object
+            $ref: '#/components/schemas/Instructor'
         contactInfo:
-          description: Контактная информация (тел, соц. сети)
-          type: string
-        #        change to list of Services (Entity, one to many)
+          $ref: '#/components/schemas/ContactInfo'
         serviceBasicInfo:
-          description: Краткая информация по услугам, предоставляемым школой
+          description: Список услуг предоставляемых школой
+          type: array
+          items:
+            type: string
+      required:
+        - name
+        - headOfSchool
+        - location
+        - instructorList
+        - contactInfo
+      # TODO Trip List one To Many field or aggregate?
+
+    Location:
+      description: Информация об адресе и метсонахождении
+      type: object
+      properties:
+        address:
           type: string
+        geolocation:
+          type: string
+        shortInfo:
+          type: string
+          description: как проехать и на чем
+      required:
+        - address
+
+    ContactInfo:
+      description:  Контактная информация (тел, соц. сети)
+      type: object
+      properties:
+        mobilePhones:
+          type: array
+          items:
+            type: string
+            minItems: 1
+            maxItems: 3
+            uniqueItems: true
+        socialMedia:
+          type: array
+          items:
+            type: string
+            minItems: 1
+            maxItems: 5
+            uniqueItems: true
+        email:
+          type: string
+      required:
+        - mobilePhoneList
+        - socialMedia
+
+    Instructor:
+      description: Описание информации об инструкторе
+      type: object
+      properties:
+        schoolIdList:
+          type: array
+          items:
+            type: string
+            minItems: 1
+        name:
+          type: string
+        surname:
+          type: string
+        patronymic:
+          type: string
+        dateOfBirth:
+          type: string
+        shortInfo:
+          type: string
+          description: Информация о себе
+        photo:
+          type: string
+          format: binary
+        hoursOfFly:
+          description: Чистое время налета
+          type: integer
+        flyLocations:
+          description: Летные места
+          type: array
+          items:
+            type: string
+            minItems: 7
+        isCertified:
+          type: boolean
+          default: false
+        certificateUrl:
+          description: Ссылка на сайт с международной сертификацией
+          type: string
+        mobilePhone:
+          type: string
+      required:
+        - name
+        - surname
+        - dateOfBirth
+        - hoursOfFly
+        - flyLocations
+        - isCertified
 
     CreateSchoolRequest:
       description: Структура для запроса создания новой школы
@@ -257,14 +420,16 @@ components:
                 $ref: '#/components/schemas/CommonPermissions'
 
     GetSchoolRequest:
-      description: Структура для получения школы
+      description: Структура для получения школ
       allOf:
         - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
-            schoolId:
-              type: string
+            schoolIdList:
+              type: array
+              items:
+                type: string
             debug:
               allOf:
                 - $ref: '#/components/schemas/BaseDebugRequest'
@@ -278,14 +443,16 @@ components:
                         - databaseError
 
     GetSchoolResponse:
-      description: Структура для ответа на запрос с информацией о школе
+      description: Структура для ответа на запрос с информацией о школах
       allOf:
         - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
           properties:
-            readSchool:
-              $ref: '#/components/schemas/ResponseSchool'
+            readSchoolList:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseSchool'
 
     UpdateSchool:
       allOf:
@@ -365,11 +532,14 @@ components:
     Trip:
       type: object
       properties:
+        schoolId:
+          type: string
+          description: Принадлежность выезда конкретной школе
         location:
+          $ref: '#/components/schemas/Location'
+        photo:
           type: string
-          description: город, страна
-        photoUrl:
-          type: string
+          format: binary
           description: красивое фото с кэмпа для отображения в карусели
         videoUrl:
           type: string
@@ -377,19 +547,175 @@ components:
         #        change to Object with price differences
         shortInfo:
           type: string
-          description: краткое описание, что где куда
+          description: краткое описание
         campDates:
           type: string
-          description: летные дни кэмпа
+          description: Даты кэмпа
+        flyDaysCount:
+          type: integer
+          description: количество летных дней
         equipmentNeeded:
           type: boolean
           description: включать аренду снаряжения на даты кэмп
-        recommendedFlightDates:
-          type: string
-          description: рекомендованные даты поездки
-        price:
+        campPrice:
           type: integer
-          description: стоимость в евро
+        equipmentRentalPrice:
+          type: integer
+        hasNoFlyDiscount:
+          type: boolean
+          description: Есть ли скидка на нелетные дни
+        noFlyDiscount:
+          type: integer
+          description: Размер скидки за нелетный день
+
+    CreateTripRequest:
+      description: Структура для запроса создания нового выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            createTrip:
+              $ref: '#/components/schemas/Trip'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - errorDb
+                        - fieldsEmpty
+
+    CreateTripResponse:
+      description: Структура для ответа на запрос о создании выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            createdTrip:
+              $ref: '#/components/schemas/ResponseTrip'
+
+    ResponseTrip:
+      allOf:
+        - $ref: '#/components/schemas/UpdateTrip'
+        - type: object
+          properties:
+            permissions:
+              type: array
+              items:
+                $ref: '#/components/schemas/CommonPermissions'
+
+
+    GetTripRequest:
+      description: Структура для получения выездов
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            tripIdList:
+              type: array
+              items:
+                type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
+
+    GetTripResponse:
+      description: Структура для ответа на запрос с информацией о выездах
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            readTripList:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseTrip'
+
+    UpdateTrip:
+      allOf:
+        - $ref: '#/components/schemas/Trip'
+        - type: object
+          properties:
+            tripId:
+              type: string
+
+    UpdateTripRequest:
+      description: Структура для запроса обновления существующего выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            updateTrip:
+              $ref: '#/components/schemas/UpdateTrip'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyTitle
+                        - databaseError
+
+    UpdateTripResponse:
+      description: Структура для ответа на запрос об обновлении существующего выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            updatedTrip:
+              $ref: '#/components/schemas/ResponseTrip'
+
+    #school deleting is for admins only
+    DeleteTripRequest:
+      description: Структура для запроса удаления выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            tripId:
+              type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
+
+    DeleteTripResponse:
+      description: Структура для ответа на запрос об удалении выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            deletedTrip:
+              $ref: '#/components/schemas/ResponseTrip'
+
 
 
 
