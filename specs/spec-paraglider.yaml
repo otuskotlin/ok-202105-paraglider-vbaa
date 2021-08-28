@@ -24,8 +24,8 @@ paths:
   #  /school/init
 
   #school CRUDS
-  /school:
-    get:
+  /school/list:
+    post:
       tags:
         - School
       summary: get school list by id
@@ -44,6 +44,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetSchoolResponse'
+  /school/create:
     post:
       tags:
         - School
@@ -63,7 +64,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateSchoolResponse'
-    put:
+  /school/update:
+    post:
       tags:
         - School
       summary: update school by id
@@ -82,7 +84,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateSchoolResponse'
-    delete:
+  /school/delete:
+    post:
       summary: delete school by id
       operationId: DeleteSchoolById
       requestBody:
@@ -101,8 +104,8 @@ paths:
                 $ref: '#/components/schemas/DeleteSchoolResponse'
 
    #trip CRUDS
-  /trip:
-    get:
+  /trip/list:
+    post:
       tags:
         - Trip
       summary: get trip list by id
@@ -121,6 +124,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetTripResponse'
+  /trip/create:
     post:
       tags:
         - Trip
@@ -140,7 +144,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateTripResponse'
-    put:
+  /trip/update:
+    post:
       tags:
         - School
       summary: update trip by id
@@ -159,7 +164,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateTripResponse'
-    delete:
+  /trip/delete:
+    post:
       summary: delete trip by id
       operationId: DeleteTripById
       requestBody:
@@ -250,13 +256,56 @@ components:
         - delete
         - create
 
+    BasePaginatedRequest:
+      type: object
+      description: Структура с описанием запрашиваемой страницы в запросах списков
+      properties:
+        size:
+          type: integer
+          description: Размер запрашиваемой страницы
+          format: int32
+        lastId:
+          type: string
+          description: Идентификатор последнего объекта предыдущей страницы
+
+    BasePaginatedResponse:
+      type: object
+      description: Структура с описанием страницы в ответе
+      properties:
+        size:
+          type: integer
+          description: Размер запрашиваемой страницы
+          format: int32
+        lastId:
+          type: string
+          description: Идентификатор последнего объекта предыдущей страницы
+        position:
+          type: string
+          enum:
+            - first
+            - middle
+            - last
+
+    InitSchoolRequest:
+      description: Структура для запроса начального состояния при старте вэб-клиента
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+
+    InitSchoolResponse:
+      description: Структура для ответа с начальным состоянием при старте вэб-клиента
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+
     #TODO BasePageRequest/Response (filters)
 
     #
     #    SCHOOL
     #
 
-    School:
+    SchoolDTO:
       type: object
       properties:
         name:
@@ -266,33 +315,37 @@ components:
           description: Welcome-видео школы
           type: string
         headOfSchool:
-          $ref: '#/components/schemas/Instructor'
+          $ref: '#/components/schemas/InstructorDTO'
         shortInfo:
           description: Краткая информация, история школы
           type: string
         location:
-          $ref: '#/components/schemas/Location'
+          $ref: '#/components/schemas/LocationDTO'
+#          TODO инструкторов сделать отдельным CRUD
         instructorList:
           description: Список инструкторов
           type: array
           items:
-            $ref: '#/components/schemas/Instructor'
+            $ref: '#/components/schemas/InstructorDTO'
         contactInfo:
-          $ref: '#/components/schemas/ContactInfo'
+          $ref: '#/components/schemas/ContactInfoDTO'
         serviceBasicInfo:
           description: Список услуг предоставляемых школой
           type: array
           items:
             type: string
-      required:
-        - name
-        - headOfSchool
-        - location
-        - instructorList
-        - contactInfo
+        status:
+          $ref: '#/components/schemas/SchoolStatusDTO'
+
+    SchoolStatusDTO:
+      type: string
+      description: 'Статусы валидации школы. Возможные значения: активна, ожидает активации'
+      enum:
+        - active
+        - pendingActivation
       # TODO Trip List one To Many field or aggregate?
 
-    Location:
+    LocationDTO:
       description: Информация об адресе и метсонахождении
       type: object
       properties:
@@ -303,10 +356,8 @@ components:
         shortInfo:
           type: string
           description: как проехать и на чем
-      required:
-        - address
 
-    ContactInfo:
+    ContactInfoDTO:
       description:  Контактная информация (тел, соц. сети)
       type: object
       properties:
@@ -326,11 +377,8 @@ components:
             uniqueItems: true
         email:
           type: string
-      required:
-        - mobilePhoneList
-        - socialMedia
 
-    Instructor:
+    InstructorDTO:
       description: Описание информации об инструкторе
       type: object
       properties:
@@ -352,7 +400,7 @@ components:
           description: Информация о себе
         photo:
           type: string
-          format: binary
+#          format: binary
         hoursOfFly:
           description: Чистое время налета
           type: integer
@@ -362,21 +410,13 @@ components:
           items:
             type: string
             minItems: 7
-        isCertified:
+        hasCertificate:
           type: boolean
-          default: false
         certificateUrl:
           description: Ссылка на сайт с международной сертификацией
           type: string
         mobilePhone:
           type: string
-      required:
-        - name
-        - surname
-        - dateOfBirth
-        - hoursOfFly
-        - flyLocations
-        - isCertified
 
     CreateSchoolRequest:
       description: Структура для запроса создания новой школы
@@ -386,7 +426,7 @@ components:
         - type: object
           properties:
             createSchool:
-              $ref: '#/components/schemas/School'
+              $ref: '#/components/schemas/SchoolDTO'
             debug:
               allOf:
                 - $ref: '#/components/schemas/BaseDebugRequest'
@@ -456,7 +496,7 @@ components:
 
     UpdateSchool:
       allOf:
-        - $ref: '#/components/schemas/School'
+        - $ref: '#/components/schemas/SchoolDTO'
         - type: object
           properties:
             schoolId:
@@ -480,7 +520,7 @@ components:
                       type: string
                       enum:
                         - success
-                        - emptyTitle
+                        - emptyDescription
                         - databaseError
 
     UpdateSchoolResponse:
@@ -525,21 +565,44 @@ components:
             deletedSchool:
               $ref: '#/components/schemas/ResponseSchool'
 
+    SearchSchoolRequest:
+      description: Структура для запроса поиска объявлений
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedRequest'
+
+    SearchSchoolResponse:
+      description: Структура для ответа на запрос поиска объявлений
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedResponse'
+            foundAds:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseSchool'
 
     #
     #   TRIP CRUD
     #
-    Trip:
+    TripDTO:
       type: object
       properties:
         schoolId:
           type: string
           description: Принадлежность выезда конкретной школе
         location:
-          $ref: '#/components/schemas/Location'
+          $ref: '#/components/schemas/LocationDTO'
         photo:
           type: string
-          format: binary
+#          format: binary
           description: красивое фото с кэмпа для отображения в карусели
         videoUrl:
           type: string
@@ -576,7 +639,7 @@ components:
         - type: object
           properties:
             createTrip:
-              $ref: '#/components/schemas/Trip'
+              $ref: '#/components/schemas/TripDTO'
             debug:
               allOf:
                 - $ref: '#/components/schemas/BaseDebugRequest'
@@ -647,7 +710,7 @@ components:
 
     UpdateTrip:
       allOf:
-        - $ref: '#/components/schemas/Trip'
+        - $ref: '#/components/schemas/TripDTO'
         - type: object
           properties:
             tripId:
@@ -671,7 +734,7 @@ components:
                       type: string
                       enum:
                         - success
-                        - emptyTitle
+                        - emptyDescription
                         - databaseError
 
     UpdateTripResponse:
