@@ -8,7 +8,7 @@ data class SchoolContext(
     var operation: CommonOperations = CommonOperations.NONE,
 
     var onRequest: String = "",
-    var requestSchoolId: SchoolIdModel = SchoolIdModel.NONE,
+    var requestSchoolIds: Set<SchoolIdModel> = mutableSetOf(),
     var requestSchool: SchoolModel = SchoolModel(),
     var responseSchool: SchoolModel = SchoolModel(),
     var requestPage: PaginatedModel = PaginatedModel(),
@@ -18,22 +18,6 @@ data class SchoolContext(
     var status: CorStatus = CorStatus.STARTED,
 ) {
 
-    enum class CommonOperations {
-        NONE,
-        INIT,
-        CREATE,
-        READ,
-        UPDATE,
-        DELETE,
-        SEARCH
-    }
-
-    /**
-     * Добавляет ошибку в контекст
-     *
-     * @param error Ошибка, которую необходимо добавить в контекст
-     * @param failingStatus Необходимо ли установить статус выполнения в FAILING (true/false)
-     */
     fun addError(error: IError, failingStatus: Boolean = true) = apply {
         if (failingStatus) status = CorStatus.FAILING
         errors.add(error)

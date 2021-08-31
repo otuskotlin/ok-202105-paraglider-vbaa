@@ -9,6 +9,7 @@ pluginManagement {
         kotlin("plugin.serialization") version kotlinVersion
 
         id("org.openapi.generator") version openApiVersion
+        kotlin("kapt") version kotlinVersion
     }
 }
 

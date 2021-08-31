@@ -220,7 +220,7 @@ components:
           enum:
             - success
             - failed
-        erros:
+        errors:
           type: array
           items:
             $ref: '#/components/schemas/RequestError'
@@ -298,8 +298,6 @@ components:
         - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
-
-    #TODO BasePageRequest/Response (filters)
 
     #
     #    SCHOOL
@@ -384,6 +382,7 @@ components:
       properties:
         schoolIdList:
           type: array
+          uniqueItems: true
           items:
             type: string
             minItems: 1
@@ -407,6 +406,7 @@ components:
         flyLocations:
           description: Летные места
           type: array
+          uniqueItems: true
           items:
             type: string
             minItems: 7
@@ -456,6 +456,7 @@ components:
           properties:
             permissions:
               type: array
+              uniqueItems: true
               items:
                 $ref: '#/components/schemas/CommonPermissions'
 
@@ -468,6 +469,7 @@ components:
           properties:
             schoolIdList:
               type: array
+              uniqueItems: true
               items:
                 type: string
             debug:
@@ -566,7 +568,7 @@ components:
               $ref: '#/components/schemas/ResponseSchool'
 
     SearchSchoolRequest:
-      description: Структура для запроса поиска объявлений
+      description: Структура для запроса поиска школ
       allOf:
         - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseRequest'
@@ -576,7 +578,7 @@ components:
               $ref: '#/components/schemas/BasePaginatedRequest'
 
     SearchSchoolResponse:
-      description: Структура для ответа на запрос поиска объявлений
+      description: Структура для ответа на запрос поиска школ
       allOf:
         - $ref: '#/components/schemas/BaseMessage'
         - $ref: '#/components/schemas/BaseResponse'
@@ -584,7 +586,7 @@ components:
           properties:
             page:
               $ref: '#/components/schemas/BasePaginatedResponse'
-            foundAds:
+            foundSchools:
               type: array
               items:
                 $ref: '#/components/schemas/ResponseSchool'
@@ -669,6 +671,7 @@ components:
           properties:
             permissions:
               type: array
+              uniqueItems: true
               items:
                 $ref: '#/components/schemas/CommonPermissions'
 

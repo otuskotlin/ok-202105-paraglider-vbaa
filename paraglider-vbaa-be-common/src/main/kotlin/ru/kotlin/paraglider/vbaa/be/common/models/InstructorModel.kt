@@ -1,16 +1,19 @@
 package ru.kotlin.paraglider.vbaa.be.common.models
 
+import java.time.Instant
+import java.time.LocalDate
+
 data class InstructorModel(
-    val schoolIdList: List<String>? = mutableListOf(),
-    val name: String? = "",
-    val surname: String? = "",
-    val patronymic: String? = "",
-    val dateOfBirth: String? = "",
-    val shortInfo: String? = "",
-    val photo: String? = "",
-    val hoursOfFly: Int? = 0,
-    val flyLocations: List<String>? = mutableListOf(),
-    val hasCertificate: Boolean? = false,
-    val certificateUrl: String? = "",
-    val mobilePhone: String? = ""
+    var schoolIdList: Set<SchoolIdModel> = mutableSetOf(),
+    var name: String = "",
+    var surname: String = "",
+    var patronymic: String = "",
+    var dateOfBirth: LocalDate = LocalDate.MIN,
+    var shortInfo: String = "",
+    var photo: String = "",
+    var hoursOfFly: Int = Int.MIN_VALUE,
+    var flyLocations: Set<String> = mutableSetOf(),
+    var hasCertificate: Boolean = false,
+    var certificateUrl: String = "",
+    var mobilePhone: String = ""
 )

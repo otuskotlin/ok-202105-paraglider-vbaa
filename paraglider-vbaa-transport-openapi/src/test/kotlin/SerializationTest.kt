@@ -19,9 +19,9 @@ class SerializationTest {
                 name = "Maria",
                 surname = "Viklayeva",
                 patronymic = "Igorevna",
-                dateOfBirth = "31.12.1984",
+                dateOfBirth = "1984-12-31",
                 hoursOfFly = 1000,
-                flyLocations = listOf("Chegem","Babadag","Krusevo",
+                flyLocations = setOf("Chegem","Babadag","Krusevo",
                     "Marokko", "Юца", "Serbia", "Albania", "Alania"),
                 shortInfo = "Paragliding is my life",
                 hasCertificate = true,
@@ -29,7 +29,7 @@ class SerializationTest {
                 mobilePhone = "89661234567",
 //                photo = File("/pic.jpg"),
                 photo = "/pic.jpg",
-                schoolIdList = listOf("1")
+                schoolIdList = setOf("1")
             ),
             contactInfo = ContactInfoDTO(
                 socialMedia = listOf("instagram.com")
