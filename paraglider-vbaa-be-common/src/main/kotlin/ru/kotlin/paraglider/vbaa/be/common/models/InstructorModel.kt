@@ -1,6 +1,6 @@
 package ru.kotlin.paraglider.vbaa.be.common.models
 
-import java.time.Instant
+import java.net.URL
 import java.time.LocalDate
 
 data class InstructorModel(
@@ -10,10 +10,10 @@ data class InstructorModel(
     var patronymic: String = "",
     var dateOfBirth: LocalDate = LocalDate.MIN,
     var shortInfo: String = "",
+    //TODO change to class media Object
     var photo: String = "",
     var hoursOfFly: Int = Int.MIN_VALUE,
     var flyLocations: Set<String> = mutableSetOf(),
-    var hasCertificate: Boolean = false,
-    var certificateUrl: String = "",
+    var certificateUrl: URL = URL(""),
     var mobilePhone: String = ""
 )

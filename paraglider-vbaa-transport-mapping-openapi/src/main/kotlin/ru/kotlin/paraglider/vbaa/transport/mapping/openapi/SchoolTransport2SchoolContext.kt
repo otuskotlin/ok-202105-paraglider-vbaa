@@ -4,7 +4,7 @@ import ru.kotlin.paraglider.vbaa.be.common.context.CommonOperations
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.models.*
 import ru.kotlin.paraglider.vbaa.openapi.models.*
-import java.time.Instant
+import java.net.URL
 import java.time.LocalDate
 
 fun SchoolContext.setQuery(query: InitSchoolRequest) = apply {
@@ -94,7 +94,6 @@ fun InstructorDTO.toModel() = InstructorModel(
     photo = photo?:"",
     hoursOfFly = hoursOfFly?:0,
     flyLocations = flyLocations?: mutableSetOf(),
-    hasCertificate = hasCertificate?: false,
-    certificateUrl = certificateUrl?:"",
+    certificateUrl = URL(certificateUrl?:""),
     mobilePhone = mobilePhone?:""
 )

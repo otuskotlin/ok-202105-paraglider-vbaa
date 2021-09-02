@@ -397,6 +397,7 @@ components:
         shortInfo:
           type: string
           description: Информация о себе
+#        TODO сделать отдельный Request на create/update media файлов
         photo:
           type: string
 #          format: binary
@@ -410,8 +411,6 @@ components:
           items:
             type: string
             minItems: 7
-        hasCertificate:
-          type: boolean
         certificateUrl:
           description: Ссылка на сайт с международной сертификацией
           type: string
@@ -602,6 +601,7 @@ components:
           description: Принадлежность выезда конкретной школе
         location:
           $ref: '#/components/schemas/LocationDTO'
+#        TODO сделать отдельный Request на create/update media файлов
         photo:
           type: string
 #          format: binary

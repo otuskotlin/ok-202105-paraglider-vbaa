@@ -96,8 +96,7 @@ private fun InstructorModel.toTransport() = InstructorDTO(
     photo = photo.takeIf { it.isNotBlank() },
     hoursOfFly = hoursOfFly.takeIf { it != Int.MIN_VALUE },
     flyLocations = flyLocations.takeIf { it.isNotEmpty() },
-    hasCertificate = hasCertificate,
-    certificateUrl = certificateUrl.takeIf { it.isNotBlank() },
+    certificateUrl = certificateUrl.toString(),
     mobilePhone = mobilePhone.takeIf { it.isNotBlank() },
 )
 

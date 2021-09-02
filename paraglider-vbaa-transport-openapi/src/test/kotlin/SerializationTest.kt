@@ -24,7 +24,6 @@ class SerializationTest {
                 flyLocations = setOf("Chegem","Babadag","Krusevo",
                     "Marokko", "Юца", "Serbia", "Albania", "Alania"),
                 shortInfo = "Paragliding is my life",
-                hasCertificate = true,
                 certificateUrl = "some_cert_url",
                 mobilePhone = "89661234567",
 //                photo = File("/pic.jpg"),
