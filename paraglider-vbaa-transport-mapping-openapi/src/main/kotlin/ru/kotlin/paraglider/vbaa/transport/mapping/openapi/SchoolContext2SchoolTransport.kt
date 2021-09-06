@@ -18,11 +18,13 @@ fun SchoolContext.toInitResponse() = InitSchoolResponse(
 
 fun SchoolContext.toGetResponse() = GetSchoolResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
-    readSchoolList = responseSchoolList.takeIf { it.isNotEmpty() }?.filter { it != SchoolModel() }?.map{ it.toTransport()},
+    readSchoolList = responseSchoolList.takeIf { it.isNotEmpty() }?.filter { it != SchoolModel() }
+        ?.map { it.toTransport() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     result = if (errors.find { it.level == IError.Level.ERROR } == null) GetSchoolResponse.Result.SUCCESS
     else GetSchoolResponse.Result.FAILED
 )
+
 fun SchoolContext.toCreateResponse() = CreateSchoolResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
     createdSchool = responseSchool.takeIf { it != SchoolModel() }?.toTransport(),
@@ -46,15 +48,17 @@ fun SchoolContext.toDeleteResponse() = DeleteSchoolResponse(
     result = if (errors.find { it.level == IError.Level.ERROR } == null) DeleteSchoolResponse.Result.SUCCESS
     else DeleteSchoolResponse.Result.FAILED
 )
+
 fun SchoolContext.toSearchResponse() = SearchSchoolResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
-    foundSchools = responseSchoolList.takeIf { it.isNotEmpty() }?.filter { it != SchoolModel() }?.map{ it.toTransport()},
+    foundSchools = responseSchoolList.takeIf { it.isNotEmpty() }?.filter { it != SchoolModel() }
+        ?.map { it.toTransport() },
     errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     result = if (errors.find { it.level == IError.Level.ERROR } == null) SearchSchoolResponse.Result.SUCCESS
     else SearchSchoolResponse.Result.FAILED
 )
 
-fun SchoolContext.toResponse() = when(operation) {
+fun SchoolContext.toResponse() = when (operation) {
     CommonOperations.INIT -> toInitResponse()
     CommonOperations.CREATE -> toCreateResponse()
     CommonOperations.READ -> toGetResponse()
@@ -79,7 +83,7 @@ private fun SchoolModel.toTransport() = ResponseSchool(
     instructorList = instructorList.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
     contactInfo = contactInfo.takeIf { it != ContactInfoModel() }?.toTransport(),
     serviceBasicInfo = serviceBasicInfo.takeIf { it.isNotEmpty() },
-    status = status.takeIf { it != SchoolStatusModel.NONE }?.let {SchoolStatusDTO.valueOf(it.name)} ,
+    status = status.takeIf { it != SchoolStatusModel.NONE }?.let { SchoolStatusDTO.valueOf(it.name) },
     schoolId = id.takeIf { it != SchoolIdModel.NONE }?.asString(),
     permissions = permissions.takeIf { it.isNotEmpty() }?.filter { it != PermissionModel.NONE }
         ?.map { CommonPermissions.valueOf(it.name) }?.toSet()
@@ -87,7 +91,8 @@ private fun SchoolModel.toTransport() = ResponseSchool(
 
 
 private fun InstructorModel.toTransport() = InstructorDTO(
-    schoolIdList = schoolIdList.takeIf { it.isNotEmpty() }?.filter{ it!= SchoolIdModel.NONE}?.map {it.asString()}?.toSet(),
+    schoolIdList = schoolIdList.takeIf { it.isNotEmpty() }?.filter { it != SchoolIdModel.NONE }?.map { it.asString() }
+        ?.toSet(),
     name = name.takeIf { it.isNotBlank() },
     surname = surname.takeIf { it.isNotBlank() },
     patronymic = patronymic.takeIf { it.isNotBlank() },

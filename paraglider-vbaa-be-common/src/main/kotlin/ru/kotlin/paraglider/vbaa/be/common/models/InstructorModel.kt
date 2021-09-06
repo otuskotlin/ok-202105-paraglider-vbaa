@@ -14,6 +14,6 @@ data class InstructorModel(
     var photo: String = "",
     var hoursOfFly: Int = Int.MIN_VALUE,
     var flyLocations: Set<String> = mutableSetOf(),
-    var certificateUrl: URL = URL(""),
+    var certificateUrl: URL = URL("https://someurl"),
     var mobilePhone: String = ""
 )

@@ -21,8 +21,10 @@ class SerializationTest {
                 patronymic = "Igorevna",
                 dateOfBirth = "1984-12-31",
                 hoursOfFly = 1000,
-                flyLocations = setOf("Chegem","Babadag","Krusevo",
-                    "Marokko", "Юца", "Serbia", "Albania", "Alania"),
+                flyLocations = setOf(
+                    "Chegem", "Babadag", "Krusevo",
+                    "Marokko", "Юца", "Serbia", "Albania", "Alania"
+                ),
                 shortInfo = "Paragliding is my life",
                 certificateUrl = "some_cert_url",
                 mobilePhone = "89661234567",

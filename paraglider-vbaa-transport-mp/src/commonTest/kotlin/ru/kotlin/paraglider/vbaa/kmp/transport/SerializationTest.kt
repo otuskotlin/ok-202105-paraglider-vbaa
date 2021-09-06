@@ -14,9 +14,10 @@ class SerializationTest {
     val dto = CreateSchoolRequest(
         requestId = "234"
     )
+
     @Test
     fun schoolSerializeTest() {
-        val serializedString = json.encodeToString(CreateSchoolRequest.serializer(),dto)
+        val serializedString = json.encodeToString(CreateSchoolRequest.serializer(), dto)
         assertContains(serializedString, Regex("requestId\":\\s*\"234"))
     }
 
