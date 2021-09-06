@@ -1,0 +1,788 @@
+openapi: 3.0.3
+info:
+  title: Paragliding schools marketplace
+  description: 'App for those who want start learning paragliding or continue.
+  One can find there schools, instructors, trips, all necessary services and equipment
+  for paragliding.'
+  license:
+    name: MIT
+  version: 0.0.1
+servers:
+  - url: 'https://localhost:8080'
+tags:
+  - name: School
+    description: school CRUDS
+  #  - name: Instructor
+  #    description: instructor CRUDS
+  #  - name: Service
+  #    description: service CRUDS
+  - name: Trip
+    description: trip CRUDS
+
+paths:
+  # TODO init needed for WebSocket
+  #  /school/init
+
+  #school CRUDS
+  /school/list:
+    post:
+      tags:
+        - School
+      summary: get school list by id
+      operationId: getSchoolListById
+      requestBody:
+        description: GetSchoolRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSchoolRequest'
+        required: true
+      responses:
+        200:
+          description: School created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSchoolResponse'
+  /school/create:
+    post:
+      tags:
+        - School
+      summary: create new school
+      operationId: saveSchool
+      requestBody:
+        description: School object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSchoolRequest'
+        required: true
+      responses:
+        200:
+          description: School created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSchoolResponse'
+  /school/update:
+    post:
+      tags:
+        - School
+      summary: update school by id
+      operationId: UpdateSchoolById
+      requestBody:
+        description: UpdateSchoolRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSchoolRequest'
+        required: true
+      responses:
+        204:
+          description: School updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateSchoolResponse'
+  /school/delete:
+    post:
+      summary: delete school by id
+      operationId: DeleteSchoolById
+      requestBody:
+        description: DeleteSchoolRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteSchoolRequest'
+        required: true
+      responses:
+        204:
+          description: School deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteSchoolResponse'
+
+   #trip CRUDS
+  /trip/list:
+    post:
+      tags:
+        - Trip
+      summary: get trip list by id
+      operationId: getTripListById
+      requestBody:
+        description: GetTripRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTripRequest'
+        required: true
+      responses:
+        200:
+          description: Trip created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTripResponse'
+  /trip/create:
+    post:
+      tags:
+        - Trip
+      summary: save new trip
+      operationId: saveTrip
+      requestBody:
+        description: CreateTripRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTripRequest'
+        required: true
+      responses:
+        200:
+          description: Trip created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTripResponse'
+  /trip/update:
+    post:
+      tags:
+        - School
+      summary: update trip by id
+      operationId: UpdateTripById
+      requestBody:
+        description: UpdateTripRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTripRequest'
+        required: true
+      responses:
+        204:
+          description: Trip updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateTripResponse'
+  /trip/delete:
+    post:
+      summary: delete trip by id
+      operationId: DeleteTripById
+      requestBody:
+        description: DeleteTripRequest object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteTripRequest'
+        required: true
+      responses:
+        204:
+          description: Trip deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteTripResponse'
+
+
+components:
+  schemas:
+
+    #
+    #    HELPER OBJECTS
+    #
+
+    BaseMessage:
+      type: object
+      description: Базовый класс как для запросов, так и для ответов
+      properties:
+        messageType:
+          type: string
+          title: Дискриминатор
+          description: Дискриминатор, содержащий тип класса сообщения и использующийся для десериализации
+      discriminator:
+        propertyName: messageType
+
+    BaseRequest:
+      description: Базовый класс для всех запросов
+      type: object
+      properties:
+        requestId:
+          type: string
+
+    BaseResponse:
+      description: Базовый класс для всех ответов
+      type: object
+      properties:
+        requestId:
+          type: string
+        result:
+          type: string
+          enum:
+            - success
+            - failed
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestError'
+
+    RequestError:
+      type: object
+      description: Описание ошибки обработки запроса
+      properties:
+        message:
+          type: string
+        field:
+          type: string
+
+
+    BaseDebugRequest:
+      type: object
+      description: Структура с описанием отладочных параметров запроса
+      properties:
+        mode:
+          type: string
+          default: prod
+          enum:
+            - prod
+            - test
+            - stub
+
+    CommonPermissions:
+      type: string
+      description: Доступы к операциям
+      enum:
+        - read
+        - update
+        - delete
+        - create
+
+    BasePaginatedRequest:
+      type: object
+      description: Структура с описанием запрашиваемой страницы в запросах списков
+      properties:
+        size:
+          type: integer
+          description: Размер запрашиваемой страницы
+          format: int32
+        lastId:
+          type: string
+          description: Идентификатор последнего объекта предыдущей страницы
+
+    BasePaginatedResponse:
+      type: object
+      description: Структура с описанием страницы в ответе
+      properties:
+        size:
+          type: integer
+          description: Размер запрашиваемой страницы
+          format: int32
+        lastId:
+          type: string
+          description: Идентификатор последнего объекта предыдущей страницы
+        position:
+          type: string
+          enum:
+            - first
+            - middle
+            - last
+
+    InitSchoolRequest:
+      description: Структура для запроса начального состояния при старте вэб-клиента
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+
+    InitSchoolResponse:
+      description: Структура для ответа с начальным состоянием при старте вэб-клиента
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+
+    #
+    #    SCHOOL
+    #
+
+    SchoolDTO:
+      type: object
+      properties:
+        name:
+          description: Название школы
+          type: string
+        welcomeVideoUrl:
+          description: Welcome-видео школы
+          type: string
+        headOfSchool:
+          $ref: '#/components/schemas/InstructorDTO'
+        shortInfo:
+          description: Краткая информация, история школы
+          type: string
+        location:
+          $ref: '#/components/schemas/LocationDTO'
+#          TODO инструкторов сделать отдельным CRUD
+        instructorList:
+          description: Список инструкторов
+          type: array
+          items:
+            $ref: '#/components/schemas/InstructorDTO'
+        contactInfo:
+          $ref: '#/components/schemas/ContactInfoDTO'
+        serviceBasicInfo:
+          description: Список услуг предоставляемых школой
+          type: array
+          items:
+            type: string
+        status:
+          $ref: '#/components/schemas/SchoolStatusDTO'
+
+    SchoolStatusDTO:
+      type: string
+      description: 'Статусы валидации школы. Возможные значения: активна, ожидает активации'
+      enum:
+        - active
+        - pendingActivation
+      # TODO Trip List one To Many field or aggregate?
+
+    LocationDTO:
+      description: Информация об адресе и метсонахождении
+      type: object
+      properties:
+        address:
+          type: string
+        geolocation:
+          type: string
+        shortInfo:
+          type: string
+          description: как проехать и на чем
+
+    ContactInfoDTO:
+      description:  Контактная информация (тел, соц. сети)
+      type: object
+      properties:
+        mobilePhones:
+          type: array
+          items:
+            type: string
+            minItems: 1
+            maxItems: 3
+            uniqueItems: true
+        socialMedia:
+          type: array
+          items:
+            type: string
+            minItems: 1
+            maxItems: 5
+            uniqueItems: true
+        email:
+          type: string
+
+    InstructorDTO:
+      description: Описание информации об инструкторе
+      type: object
+      properties:
+        schoolIdList:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+            minItems: 1
+        name:
+          type: string
+        surname:
+          type: string
+        patronymic:
+          type: string
+        dateOfBirth:
+          type: string
+        shortInfo:
+          type: string
+          description: Информация о себе
+#        TODO сделать отдельный Request на create/update media файлов
+        photo:
+          type: string
+#          format: binary
+        hoursOfFly:
+          description: Чистое время налета
+          type: integer
+        flyLocations:
+          description: Летные места
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+            minItems: 7
+        certificateUrl:
+          description: Ссылка на сайт с международной сертификацией
+          type: string
+        mobilePhone:
+          type: string
+
+    CreateSchoolRequest:
+      description: Структура для запроса создания новой школы
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            createSchool:
+              $ref: '#/components/schemas/SchoolDTO'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - errorDb
+                        - fieldsEmpty
+
+    CreateSchoolResponse:
+      description: Структура для ответа на запрос о сохранении школы
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            createdSchool:
+              $ref: '#/components/schemas/ResponseSchool'
+
+    ResponseSchool:
+      allOf:
+        - $ref: '#/components/schemas/UpdateSchool'
+        - type: object
+          properties:
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/CommonPermissions'
+
+    GetSchoolRequest:
+      description: Структура для получения школ
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            schoolIdList:
+              type: array
+              uniqueItems: true
+              items:
+                type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
+
+    GetSchoolResponse:
+      description: Структура для ответа на запрос с информацией о школах
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            readSchoolList:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseSchool'
+
+    UpdateSchool:
+      allOf:
+        - $ref: '#/components/schemas/SchoolDTO'
+        - type: object
+          properties:
+            schoolId:
+              type: string
+
+    UpdateSchoolRequest:
+      description: Структура для запроса обновления существующей школы
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            updateSchool:
+              $ref: '#/components/schemas/UpdateSchool'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyDescription
+                        - databaseError
+
+    UpdateSchoolResponse:
+      description: Структура для ответа на запрос об обновлении существующей школы
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            updatedSchool:
+              $ref: '#/components/schemas/ResponseSchool'
+
+    #school deleting is for admins only
+    DeleteSchoolRequest:
+      description: Структура для запроса удаления школы
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            schoolId:
+              type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
+
+    DeleteSchoolResponse:
+      description: Структура для ответа на запрос об удалении школы
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            deletedSchool:
+              $ref: '#/components/schemas/ResponseSchool'
+
+    SearchSchoolRequest:
+      description: Структура для запроса поиска школ
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedRequest'
+
+    SearchSchoolResponse:
+      description: Структура для ответа на запрос поиска школ
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            page:
+              $ref: '#/components/schemas/BasePaginatedResponse'
+            foundSchools:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseSchool'
+
+    #
+    #   TRIP CRUD
+    #
+    TripDTO:
+      type: object
+      properties:
+        schoolId:
+          type: string
+          description: Принадлежность выезда конкретной школе
+        location:
+          $ref: '#/components/schemas/LocationDTO'
+#        TODO сделать отдельный Request на create/update media файлов
+        photo:
+          type: string
+#          format: binary
+          description: красивое фото с кэмпа для отображения в карусели
+        videoUrl:
+          type: string
+          description: видео прошлого кэмпа, если есть
+        #        change to Object with price differences
+        shortInfo:
+          type: string
+          description: краткое описание
+        campDates:
+          type: string
+          description: Даты кэмпа
+        flyDaysCount:
+          type: integer
+          description: количество летных дней
+        equipmentNeeded:
+          type: boolean
+          description: включать аренду снаряжения на даты кэмп
+        campPrice:
+          type: integer
+        equipmentRentalPrice:
+          type: integer
+        hasNoFlyDiscount:
+          type: boolean
+          description: Есть ли скидка на нелетные дни
+        noFlyDiscount:
+          type: integer
+          description: Размер скидки за нелетный день
+
+    CreateTripRequest:
+      description: Структура для запроса создания нового выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            createTrip:
+              $ref: '#/components/schemas/TripDTO'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - errorDb
+                        - fieldsEmpty
+
+    CreateTripResponse:
+      description: Структура для ответа на запрос о создании выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            createdTrip:
+              $ref: '#/components/schemas/ResponseTrip'
+
+    ResponseTrip:
+      allOf:
+        - $ref: '#/components/schemas/UpdateTrip'
+        - type: object
+          properties:
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/CommonPermissions'
+
+
+    GetTripRequest:
+      description: Структура для получения выездов
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            tripIdList:
+              type: array
+              items:
+                type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
+
+    GetTripResponse:
+      description: Структура для ответа на запрос с информацией о выездах
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            readTripList:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseTrip'
+
+    UpdateTrip:
+      allOf:
+        - $ref: '#/components/schemas/TripDTO'
+        - type: object
+          properties:
+            tripId:
+              type: string
+
+    UpdateTripRequest:
+      description: Структура для запроса обновления существующего выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            updateTrip:
+              $ref: '#/components/schemas/UpdateTrip'
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyDescription
+                        - databaseError
+
+    UpdateTripResponse:
+      description: Структура для ответа на запрос об обновлении существующего выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            updatedTrip:
+              $ref: '#/components/schemas/ResponseTrip'
+
+    #school deleting is for admins only
+    DeleteTripRequest:
+      description: Структура для запроса удаления выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            tripId:
+              type: string
+            debug:
+              allOf:
+                - $ref: '#/components/schemas/BaseDebugRequest'
+                - type: object
+                  properties:
+                    stub:
+                      type: string
+                      enum:
+                        - success
+                        - emptyId
+                        - databaseError
+
+    DeleteTripResponse:
+      description: Структура для ответа на запрос об удалении выезда
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            deletedTrip:
+              $ref: '#/components/schemas/ResponseTrip'
+
+
+
+
+
