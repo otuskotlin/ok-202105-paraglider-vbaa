@@ -4,7 +4,7 @@ import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 import kotlin.math.max
 
-class KotestTest: StringSpec({
+class KotestTest : StringSpec({
 
     "our first Test JVM" {
         1.toString() shouldBe "1"

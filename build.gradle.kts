@@ -12,7 +12,7 @@ subprojects {
     group = rootProject.group
     version = rootProject.version
 
-    repositories{
+    repositories {
         mavenCentral()
     }
 }

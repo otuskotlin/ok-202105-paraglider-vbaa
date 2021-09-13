@@ -20,9 +20,26 @@ tags:
     description: trip CRUDS
 
 paths:
-  # TODO init needed for WebSocket
-  #  /school/init
-
+  /school/init:
+    post:
+      tags:
+        - School
+      summary: Получить статус при инициализации
+      operationId: initSchool
+      requestBody:
+        description: Объект запроса для инициализации при старте приложения
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitSchoolRequest'
+        required: true
+      responses:
+        200:
+          description: all responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitSchoolResponse'
   #school CRUDS
   /school/list:
     post:
@@ -86,6 +103,8 @@ paths:
                 $ref: '#/components/schemas/UpdateSchoolResponse'
   /school/delete:
     post:
+      tags:
+        - School
       summary: delete school by id
       operationId: DeleteSchoolById
       requestBody:
@@ -103,7 +122,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DeleteSchoolResponse'
 
-   #trip CRUDS
+    #trip CRUDS
   /trip/list:
     post:
       tags:
@@ -147,7 +166,7 @@ paths:
   /trip/update:
     post:
       tags:
-        - School
+        - Trip
       summary: update trip by id
       operationId: UpdateTripById
       requestBody:
@@ -166,6 +185,8 @@ paths:
                 $ref: '#/components/schemas/UpdateTripResponse'
   /trip/delete:
     post:
+      tags:
+        - Trip
       summary: delete trip by id
       operationId: DeleteTripById
       requestBody:
@@ -319,7 +340,7 @@ components:
           type: string
         location:
           $ref: '#/components/schemas/LocationDTO'
-#          TODO инструкторов сделать отдельным CRUD
+        #          TODO инструкторов сделать отдельным CRUD
         instructorList:
           description: Список инструкторов
           type: array
@@ -356,7 +377,7 @@ components:
           description: как проехать и на чем
 
     ContactInfoDTO:
-      description:  Контактная информация (тел, соц. сети)
+      description: Контактная информация (тел, соц. сети)
       type: object
       properties:
         mobilePhones:
@@ -397,10 +418,10 @@ components:
         shortInfo:
           type: string
           description: Информация о себе
-#        TODO сделать отдельный Request на create/update media файлов
+        #        TODO сделать отдельный Request на create/update media файлов
         photo:
           type: string
-#          format: binary
+        #          format: binary
         hoursOfFly:
           description: Чистое время налета
           type: integer
@@ -601,10 +622,10 @@ components:
           description: Принадлежность выезда конкретной школе
         location:
           $ref: '#/components/schemas/LocationDTO'
-#        TODO сделать отдельный Request на create/update media файлов
+        #        TODO сделать отдельный Request на create/update media файлов
         photo:
           type: string
-#          format: binary
+          #          format: binary
           description: красивое фото с кэмпа для отображения в карусели
         videoUrl:
           type: string

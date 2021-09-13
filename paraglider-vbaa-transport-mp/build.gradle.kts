@@ -93,7 +93,7 @@ kotlin {
         )
     }
     tasks {
-        compileKotlinMetadata{
+        compileKotlinMetadata {
             dependsOn(openApiGenerate)
         }
     }

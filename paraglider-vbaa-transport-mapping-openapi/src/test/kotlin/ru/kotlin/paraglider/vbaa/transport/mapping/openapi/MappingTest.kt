@@ -71,7 +71,7 @@ class MappingTest {
                     schoolIdList = setOf(SchoolIdModel("1")),
                     name = "Maria",
                     surname = "Viklayeva",
-                    dateOfBirth = LocalDate.of(1984,12,31)
+                    dateOfBirth = LocalDate.of(1984, 12, 31)
                 ),
                 shortInfo = "paragliding school",
                 location = LocationModel(
@@ -84,7 +84,7 @@ class MappingTest {
                         schoolIdList = setOf(SchoolIdModel("1")),
                         name = "Ivan",
                         surname = "Ivanov",
-                        dateOfBirth = LocalDate.of(1990,1,20)
+                        dateOfBirth = LocalDate.of(1990, 1, 20)
                     )
                 ),
                 contactInfo = ContactInfoModel(

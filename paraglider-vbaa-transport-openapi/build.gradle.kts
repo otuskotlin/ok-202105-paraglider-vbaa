@@ -24,12 +24,14 @@ openApiGenerate {
      * Настройка дополнительных параметров из документации по генератору
      * https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/kotlin.md
      */
-    configOptions.set(mapOf(
-        "dateLibrary" to "string",
-        "enumPropertyNaming" to "UPPERCASE",
-        "serializationLibrary" to "jackson",
-        "collectionType" to "list"
-    ))
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "string",
+            "enumPropertyNaming" to "UPPERCASE",
+            "serializationLibrary" to "jackson",
+            "collectionType" to "list"
+        )
+    )
 
     /**
      * Так генерируется KMP версия

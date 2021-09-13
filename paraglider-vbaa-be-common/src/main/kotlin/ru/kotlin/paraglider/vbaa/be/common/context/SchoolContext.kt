@@ -4,7 +4,7 @@ import ru.kotlin.paraglider.vbaa.be.common.models.*
 import java.time.Instant
 
 data class SchoolContext(
-    var startTime : Instant = Instant.MIN,
+    var startTime: Instant = Instant.MIN,
     var operation: CommonOperations = CommonOperations.NONE,
 
     var onRequest: String = "",
