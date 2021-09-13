@@ -10,60 +10,55 @@ class SchoolController(private val schoolService: SchoolService) {
         val context = SchoolContext(
             startTime = Instant.now()
         )
-        return try {
-            schoolService.createSchool(context, request)
-        }
-        catch (e: Throwable) {
-            schoolService.errorSchool(context, e) as CreateSchoolResponse
-        }
+        return handleSchool(context) {
+            createSchool(context, request)
+        } as CreateSchoolResponse
     }
 
     fun updateSchool(request: UpdateSchoolRequest): UpdateSchoolResponse {
         val context = SchoolContext(
             startTime = Instant.now()
         )
-        return try {
-            schoolService.updateSchool(context, request)
-        }
-        catch (e: Throwable) {
-            schoolService.errorSchool(context, e) as UpdateSchoolResponse
-        }
+        return handleSchool(context) {
+            updateSchool(context, request)
+        } as UpdateSchoolResponse
     }
 
     fun getSchoolList(request: GetSchoolRequest): GetSchoolResponse {
         val context = SchoolContext(
             startTime = Instant.now()
         )
-        return try {
-            schoolService.getSchoolList(context, request)
-        }
-        catch (e: Throwable) {
-            schoolService.errorSchool(context, e) as GetSchoolResponse
-        }
+        return handleSchool(context) {
+            getSchoolList(context, request)
+        } as GetSchoolResponse
     }
 
     fun deleteSchool(request: DeleteSchoolRequest): DeleteSchoolResponse {
         val context = SchoolContext(
             startTime = Instant.now()
         )
-        return try {
-            schoolService.deleteSchool(context, request)
-        }
-        catch (e: Throwable) {
-            schoolService.errorSchool(context, e) as DeleteSchoolResponse
-        }
+        return handleSchool(context) {
+            deleteSchool(context, request)
+        } as DeleteSchoolResponse
     }
 
     fun initSchool(request: InitSchoolRequest): InitSchoolResponse {
         val context = SchoolContext(
             startTime = Instant.now()
         )
-        return try {
-            schoolService.initSchool(context, request)
-        }
-        catch (e: Throwable) {
-            schoolService.errorSchool(context, e) as InitSchoolResponse
-        }
+        return handleSchool(context) {
+            initSchool(context, request)
+        } as InitSchoolResponse
     }
 
+
+    private fun handleSchool(context: SchoolContext, function: SchoolService.() -> BaseMessage): BaseMessage =
+        schoolService.let {
+            return try {
+                it.run(function)
+            } catch (e: Throwable) {
+                it.errorSchool(context, e)
+            }
+        }
 }
+
