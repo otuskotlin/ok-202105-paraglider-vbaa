@@ -6,23 +6,25 @@ import java.time.Instant
 data class SchoolContext(
     var startTime: Instant = Instant.MIN,
     var operation: CommonOperations = CommonOperations.NONE,
-
     var onRequest: String = "",
+    var stubCase: SchoolStubCase = SchoolStubCase.NONE,
+
     var requestSchoolIds: Set<SchoolIdModel> = mutableSetOf(),
     var requestSchool: SchoolModel = SchoolModel(),
-    var responseSchool: SchoolModel = SchoolModel(),
     var requestPage: PaginatedModel = PaginatedModel(),
+
     var responsePage: PaginatedModel = PaginatedModel(),
+    var responseSchool: SchoolModel = SchoolModel(),
     var responseSchoolList: MutableList<SchoolModel> = mutableListOf(),
+
     val errors: MutableList<IError> = mutableListOf(),
-    var status: CorStatus = CorStatus.STARTED,
+    var status: CorStatus = CorStatus.NONE,
 ) {
 
-    fun addError(error: IError, failingStatus: Boolean = true) = apply {
+    private fun addError(error: IError, failingStatus: Boolean = true) = apply {
         if (failingStatus) status = CorStatus.FAILING
         errors.add(error)
     }
-
 
     fun addError(
         e: Throwable,

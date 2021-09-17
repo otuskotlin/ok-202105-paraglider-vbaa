@@ -24,6 +24,12 @@ class SchoolService {
         return context.toGetResponse()
     }
 
+    fun searchSchools(context: SchoolContext, request: SearchSchoolRequest): SearchSchoolResponse {
+        context.setQuery(request)
+        context.responseSchoolList = SchoolStub.getModels()
+        return context.toSearchResponse()
+    }
+
     fun deleteSchool(context: SchoolContext, request: DeleteSchoolRequest): DeleteSchoolResponse {
         context.setQuery(request)
         context.responseSchool = SchoolStub.getModel()

@@ -94,7 +94,7 @@ object SchoolStub {
         name = schoolStubOne.name,
         welcomeVideoUrl = schoolStubOne.welcomeVideoUrl,
         headOfSchool = InstructorDTO(
-            schoolIdList = schoolStubOne.headOfSchool.schoolIdList.map{it.id}.toSet(),
+            schoolIdList = schoolStubOne.headOfSchool.schoolIdList.map{it.asString()}.toSet(),
             name = schoolStubOne.headOfSchool.name,
             surname = schoolStubOne.headOfSchool.surname,
             patronymic = null,
@@ -120,7 +120,7 @@ object SchoolStub {
         ),
         serviceBasicInfo = schoolStubOne.serviceBasicInfo,
         status = SchoolStatusDTO.valueOf(schoolStubOne.status.toString()),
-        schoolId = schoolStubOne.id.id,
+        schoolId = schoolStubOne.id.asString(),
         permissions = schoolStubOne.permissions.map { CommonPermissions.valueOf(it.toString())}.toSet()
     )
 }

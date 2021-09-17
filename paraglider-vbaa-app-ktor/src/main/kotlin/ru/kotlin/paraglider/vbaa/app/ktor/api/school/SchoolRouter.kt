@@ -22,6 +22,10 @@ fun Route.SchoolRoute() {
         val response = controller.getSchoolList(call.receive())
         call.respond(response)
     }
+    post("/search") {
+        val response = controller.searchSchools(call.receive())
+        call.respond(response)
+    }
     post("/delete") {
         val response = controller.deleteSchool(call.receive())
         call.respond(response)
