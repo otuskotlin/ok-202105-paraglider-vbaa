@@ -1,44 +1,44 @@
 package ru.kotlin.paraglider.vbaa.app.ktor.service
 
-import ru.kotlin.paraglider.vbaa.app.ktor.stubs.SchoolStub
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
+import ru.kotlin.paraglider.vbaa.be.logics.chains.school.SchoolCrudFacade
 import ru.kotlin.paraglider.vbaa.openapi.models.*
 import ru.kotlin.paraglider.vbaa.transport.mapping.openapi.*
 
-class SchoolService {
-    fun createSchool(context: SchoolContext, request: CreateSchoolRequest): CreateSchoolResponse {
+class SchoolService(private val schoolCrud: SchoolCrudFacade) {
+
+    suspend fun createSchool(context: SchoolContext, request: CreateSchoolRequest): CreateSchoolResponse {
         context.setQuery(request)
-        context.responseSchool = SchoolStub.getModel()
+        schoolCrud.create(context)
         return context.toCreateResponse()
     }
 
-    fun updateSchool(context: SchoolContext, request: UpdateSchoolRequest): UpdateSchoolResponse {
+    suspend fun updateSchool(context: SchoolContext, request: UpdateSchoolRequest): UpdateSchoolResponse {
         context.setQuery(request)
-        context.responseSchool = SchoolStub.getModel()
+        schoolCrud.update(context)
         return context.toUpdateResponse()
     }
 
-    fun getSchoolList(context: SchoolContext, request: GetSchoolRequest): GetSchoolResponse {
+    suspend fun getSchoolList(context: SchoolContext, request: GetSchoolRequest): GetSchoolResponse {
         context.setQuery(request)
-        context.responseSchoolList = SchoolStub.getModels()
+        schoolCrud.get(context)
         return context.toGetResponse()
     }
 
-    fun searchSchools(context: SchoolContext, request: SearchSchoolRequest): SearchSchoolResponse {
+    suspend fun searchSchools(context: SchoolContext, request: SearchSchoolRequest): SearchSchoolResponse {
         context.setQuery(request)
-        context.responseSchoolList = SchoolStub.getModels()
+        schoolCrud.search(context)
         return context.toSearchResponse()
     }
 
-    fun deleteSchool(context: SchoolContext, request: DeleteSchoolRequest): DeleteSchoolResponse {
+    suspend fun deleteSchool(context: SchoolContext, request: DeleteSchoolRequest): DeleteSchoolResponse {
         context.setQuery(request)
-        context.responseSchool = SchoolStub.getModel()
+        schoolCrud.delete(context)
         return context.toDeleteResponse()
     }
 
     fun initSchool(context: SchoolContext, request: InitSchoolRequest): InitSchoolResponse {
         context.setQuery(request)
-        context.responseSchool = SchoolStub.getModel()
         return context.toInitResponse()
     }
 

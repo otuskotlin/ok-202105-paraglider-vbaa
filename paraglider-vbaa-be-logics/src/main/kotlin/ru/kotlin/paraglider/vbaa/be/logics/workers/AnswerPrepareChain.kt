@@ -3,10 +3,11 @@ package ru.kotlin.paraglider.vbaa.be.logics.workers
 import core.ICorChainDsl
 import handlers.chain
 import handlers.worker
+import ru.kotlin.paraglider.vbaa.be.common.context.AbstractContext
 import ru.kotlin.paraglider.vbaa.be.common.context.CorStatus
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 
-internal fun ICorChainDsl<SchoolContext>.prepareResponseChain(title: String) = chain {
+internal fun ICorChainDsl<out AbstractContext>.prepareResponseChain(title: String) = chain {
     this.title = title
     description = "Чейн считается успешным, если в нем не было ошибок и он отработал"
     worker {

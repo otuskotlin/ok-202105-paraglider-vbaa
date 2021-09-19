@@ -1,4 +1,4 @@
-package ru.kotlin.paraglider.vbaa.app.ktor.stubs
+package ru.kotlin.paraglider.vbaa.be.stubs
 
 import ru.kotlin.paraglider.vbaa.be.common.models.*
 import ru.kotlin.paraglider.vbaa.openapi.models.*
@@ -7,10 +7,53 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 object SchoolStub {
+    private val createSchoolRequest = CreateSchoolRequest(
+        messageType = "CreateSchoolRequest",
+        requestId = "uuid123",
+        createSchool = SchoolDTO(
+            name = "MyNebo",
+            shortInfo = "Flying school in Moscow area",
+            welcomeVideoUrl = "someUrl.com",
+            headOfSchool = InstructorDTO(
+                name = "Maria",
+                surname = "Viklayeva",
+                patronymic = "",
+                dateOfBirth = "1984-12-31",
+                hoursOfFly = 1000,
+                flyLocations = setOf(
+                    "Chegem", "Babadag", "Krusevo",
+                    "Marokko", "Юца", "Serbia", "Albania", "Alania"
+                ),
+                shortInfo = "Paragliding is my life",
+                certificateUrl = "https://my-nebo.ru",
+                mobilePhone = "89661234567",
+//                photo = File("/pic.jpg"),
+                photo = "photo_url",
+                schoolIdList = setOf("123")
+            ),
+            contactInfo = ContactInfoDTO(
+                mobilePhones = listOf("89660000000"),
+                socialMedia = listOf("someVkUrl", "@my_nebo.ru"),
+                email = "someEmail@ya.ru"
+            ),
+            location = LocationDTO(
+                address = "Moscow area, Voronovo",
+                geolocation = "55.00, 44.00",
+                shortInfo = "Turn to the left after Cafe"
+            ),
+            serviceBasicInfo = listOf("adjust harness", "straps stretch out"),
+            instructorList = emptyList(),
+            status = SchoolStatusDTO.ACTIVE
+        ),
+        debug = BaseDebugRequest(
+            mode = BaseDebugRequest.Mode.STUB
+        )
+    )
+
     private val schoolStubOne = SchoolModel(
         id = SchoolIdModel(id = "123"),
         name = "MyNebo",
-        welcomeVideoUrl = "some_url",
+        welcomeVideoUrl = "someUrl.com",
         headOfSchool = InstructorModel(
             schoolIdList = setOf(SchoolIdModel(id = "123")),
             name = "Maria",
@@ -37,7 +80,7 @@ object SchoolStub {
         contactInfo = ContactInfoModel(
             mobilePhones = listOf("89660000000"),
             socialMedia = listOf("someVkUrl", "@my_nebo.ru"),
-            email = "someEmail"
+            email = "someEmail@ya.ru"
         ),
         serviceBasicInfo = mutableListOf("adjust harness", "straps stretch out"),
         status = SchoolStatusModel.ACTIVE,
@@ -47,7 +90,7 @@ object SchoolStub {
     private val schoolStubTwo = SchoolModel(
         id = SchoolIdModel(id = "444"),
         name = "Infinity Sky",
-        welcomeVideoUrl = "some_url",
+        welcomeVideoUrl = "someUrl.com",
         headOfSchool = InstructorModel(
             schoolIdList = setOf(SchoolIdModel(id = "444")),
             name = "Liza",
@@ -74,20 +117,24 @@ object SchoolStub {
         contactInfo = ContactInfoModel(
             mobilePhones = listOf("89331112233"),
             socialMedia = listOf("someVkUrl", "@fly_paragliding"),
-            email = "someEmail"
+            email = "someEmail@ya.ru"
         ),
         serviceBasicInfo = mutableListOf("adjust harness", "straps stretch out"),
         status = SchoolStatusModel.ACTIVE,
         permissions = mutableSetOf(PermissionModel.READ)
     )
 
-    fun getModel(model: (SchoolModel.() -> Unit)? = null) = schoolStubOne.also { stub ->
+    fun getModel(model: (SchoolModel.() -> Unit)? = null) = schoolStubOne.copy().also { stub ->
+        model?.let { stub.apply(it) }
+    }
+
+    fun getCreateSchoolRequest(model: (CreateSchoolRequest.() -> Unit)? = null) = createSchoolRequest.copy().also { stub ->
         model?.let { stub.apply(it) }
     }
 
     fun getModels() = mutableListOf(
-        schoolStubOne,
-        schoolStubTwo
+        schoolStubOne.copy(),
+        schoolStubTwo.copy()
     )
 
     val responseSchoolStubOne = ResponseSchool(

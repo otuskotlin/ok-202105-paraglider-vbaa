@@ -2,12 +2,13 @@ package ru.kotlin.paraglider.vbaa.be.logics.workers
 
 import core.ICorChainDsl
 import handlers.worker
+import ru.kotlin.paraglider.vbaa.be.common.context.AbstractContext
 import ru.kotlin.paraglider.vbaa.be.common.context.CommonOperations
 import ru.kotlin.paraglider.vbaa.be.common.context.CorStatus
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.exception.IllegalOperationException
 
-internal fun ICorChainDsl<SchoolContext>.checkOperationWorker(
+internal fun ICorChainDsl<out AbstractContext>.checkOperationWorker(
     title: String,
     targetOperation: CommonOperations
 ) = worker {

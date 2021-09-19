@@ -17,18 +17,21 @@ fun SchoolContext.setQuery(query: CreateSchoolRequest) = apply {
     operation = CommonOperations.CREATE
     onRequest = query.requestId ?: ""
     requestSchool = query.createSchool?.toModel() ?: SchoolModel()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun SchoolContext.setQuery(query: GetSchoolRequest) = apply {
     operation = CommonOperations.READ
     onRequest = query.requestId ?: ""
     requestSchoolIds = query.schoolIdList?.map { value -> SchoolIdModel(value) }?.toSet() ?: mutableSetOf()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun SchoolContext.setQuery(query: UpdateSchoolRequest) = apply {
     operation = CommonOperations.UPDATE
     onRequest = query.requestId ?: ""
     requestSchool = query.updateSchool?.toModel() ?: SchoolModel()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 
@@ -36,12 +39,14 @@ fun SchoolContext.setQuery(query: DeleteSchoolRequest) = apply {
     operation = CommonOperations.DELETE
     onRequest = query.requestId ?: ""
     requestSchoolIds = setOf(SchoolIdModel(query.schoolId ?: ""))
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun SchoolContext.setQuery(query: SearchSchoolRequest) = apply {
     operation = CommonOperations.SEARCH
     onRequest = query.requestId ?: ""
     requestPage = query.page?.toModel() ?: PaginatedModel()
+    stubCase = query.debug?.stubCase.toModel()
 }
 
 fun BasePaginatedRequest.toModel() = PaginatedModel(
@@ -99,3 +104,9 @@ fun InstructorDTO.toModel() = InstructorModel(
     certificateUrl = URL(certificateUrl ?: ""),
     mobilePhone = mobilePhone ?: ""
 )
+
+private fun BaseDebugRequest.StubCase?.toModel() = when(this) {
+    BaseDebugRequest.StubCase.SUCCESS -> CommonStubCase.SUCCESS
+    BaseDebugRequest.StubCase.DATABASE_ERROR -> CommonStubCase.DATABASE_ERROR
+    null -> CommonStubCase.NONE
+}
