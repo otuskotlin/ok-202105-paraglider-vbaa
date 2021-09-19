@@ -21,7 +21,7 @@ object SchoolUpdate: ICorExec<SchoolContext> by chain<SchoolContext>({
     chainInitWorker(title = "Инициализация чейна")
 
     validation(
-        title = "validate create school request",
+        title = "validate update school request",
         validator = SchoolUpdateValidator
     )
 

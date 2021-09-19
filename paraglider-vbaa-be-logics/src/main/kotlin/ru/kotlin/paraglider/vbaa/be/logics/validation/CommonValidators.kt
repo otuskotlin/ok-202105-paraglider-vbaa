@@ -5,6 +5,7 @@ import io.konform.validation.ValidationErrors
 import io.konform.validation.jsonschema.minLength
 import io.konform.validation.jsonschema.minimum
 import io.konform.validation.jsonschema.pattern
+import ru.kotlin.paraglider.vbaa.be.common.context.AbstractContext
 import ru.kotlin.paraglider.vbaa.be.common.context.CorStatus
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.models.CommonErrorModel
@@ -47,10 +48,10 @@ val emailCheck = Validation<String> {
 }
 
 
-fun mapErrorResult(schoolContext: SchoolContext, errors: ValidationErrors) {
+fun mapErrorResult(context: AbstractContext, errors: ValidationErrors) {
     if (!errors.isEmpty()) {
-        schoolContext.status = CorStatus.FAILING
-        schoolContext.errors.addAll(
+        context.status = CorStatus.FAILING
+        context.errors.addAll(
             errors.map { res ->
                 CommonErrorModel(
                     field = res.dataPath,
