@@ -1,8 +1,10 @@
 package ru.kotlin.paraglider.vbaa.be.common.context
 
 enum class CorStatus {
-    STARTED,
-    FINISHING,
+    NONE,
+    RUNNING,
+    FAILING,
     SUCCESS,
-    FAILING;
+    ERROR,
+    FINISHING;
 }

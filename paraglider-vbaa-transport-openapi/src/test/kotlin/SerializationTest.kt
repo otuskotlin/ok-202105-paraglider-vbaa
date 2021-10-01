@@ -1,7 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.Test
 import ru.kotlin.paraglider.vbaa.openapi.models.*
-import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

@@ -46,9 +46,9 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
     implementation(kotlin("test-junit"))
 
-    //TODO stubs
-
     implementation(project(":paraglider-vbaa-be-common"))
+    implementation(project(":paraglider-vbaa-be-logics"))
+    implementation(project(":paraglider-vbaa-be-stubs"))
     implementation(project(":paraglider-vbaa-transport-openapi"))
     implementation(project(":paraglider-vbaa-transport-mapping-openapi"))
 }

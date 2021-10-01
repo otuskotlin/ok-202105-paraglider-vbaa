@@ -46,7 +46,7 @@ class MappingTest {
                 schoolId = "1"
             )
         )
-        val context = SchoolContext().setQuery(query)
+        val context = SchoolContext(stubCase = CommonStubCase.SUCCESS).setQuery(query)
         assertEquals("123", context.onRequest)
         assertEquals("https://www.youtube.com/watch?v=HxbexLNDxZI", context.requestSchool.welcomeVideoUrl)
         assertEquals("Maria", context.requestSchool.headOfSchool.name)
