@@ -10,10 +10,6 @@ import ru.kotlin.paraglider.vbaa.be.common.context.CorStatus
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.models.CommonErrorModel
 
-val ageCheck = Validation<Int> {
-        minimum(18) hint "Возраст должен быть больше 18"
-}
-
 val notBlankCheck = Validation<String> {
     pattern(Regex("(.|\\s)*\\S(.|\\s)*")) hint "Поле не должно быть пустым"
 }

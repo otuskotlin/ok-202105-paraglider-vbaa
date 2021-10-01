@@ -6,6 +6,7 @@ import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.models.*
 import ru.kotlin.paraglider.vbaa.be.logics.validation.*
 import java.time.LocalDate
+import java.time.Period
 
 fun schoolFieldsValidation() = Validation<SchoolModel> {
     SchoolModel::welcomeVideoUrl {
@@ -23,8 +24,9 @@ fun schoolFieldsValidation() = Validation<SchoolModel> {
             run(personNameCheck)
         }
         InstructorModel::dateOfBirth {
-            addConstraint("Год рождения должен быть больше 1920", LocalDate.of(1980,1,1).toString()) {
-                it.year > 1920
+            addConstraint("Возраст должен быть не менее 14 и не более 100 лет", LocalDate.of(1980,1,1).toString()) {
+                val age = Period.between(it, LocalDate.now()).years
+                age in 14..99
             }
         }
     }

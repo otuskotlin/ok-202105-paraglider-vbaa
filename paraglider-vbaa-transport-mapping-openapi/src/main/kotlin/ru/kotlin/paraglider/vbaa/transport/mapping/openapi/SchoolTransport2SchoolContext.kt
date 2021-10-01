@@ -5,6 +5,7 @@ import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.models.*
 import ru.kotlin.paraglider.vbaa.openapi.models.*
 import java.net.URL
+import java.net.URLEncoder
 import java.time.Instant
 import java.time.LocalDate
 
@@ -101,7 +102,8 @@ fun InstructorDTO.toModel() = InstructorModel(
     photo = photo ?: "",
     hoursOfFly = hoursOfFly ?: 0,
     flyLocations = flyLocations ?: mutableSetOf(),
-    certificateUrl = URL(certificateUrl ?: ""),
+    //TODO fix it cannot initialize empty url -> validate url using regexp
+    certificateUrl = URL(certificateUrl ?: "http://someurl.com"),
     mobilePhone = mobilePhone ?: ""
 )
 

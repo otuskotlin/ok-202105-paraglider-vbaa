@@ -4,16 +4,15 @@ import ru.kotlin.paraglider.vbaa.be.common.models.*
 import java.time.Instant
 
 abstract class AbstractContext(
-    open var startTime: Instant,
     open var operation: CommonOperations,
     open var onRequest: String,
-    open var stubCase: CommonStubCase,
-
-    open val errors: MutableList<IError>,
-    open var status: CorStatus,
 ) {
+    var startTime: Instant = Instant.now()
+    var stubCase: CommonStubCase = CommonStubCase.NONE
+    var errors: MutableList<IError> = mutableListOf()
+    var status: CorStatus = CorStatus.NONE
 
-    fun addError(error: IError, failingStatus: Boolean = true) = apply {
+    private fun addError(error: IError, failingStatus: Boolean = true) = apply {
         if (failingStatus) status = CorStatus.FAILING
         errors.add(error)
     }

@@ -2,3 +2,5 @@
 /.idea/
 /build/
 **/build/
+/dockers/.idea/
+/dockers/kfdata/
