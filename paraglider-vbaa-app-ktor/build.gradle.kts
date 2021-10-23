@@ -29,10 +29,6 @@ application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("io.ktor:ktor-server-core:$ktorVersion")
@@ -48,6 +44,7 @@ dependencies {
 
     implementation(project(":paraglider-vbaa-be-common"))
     implementation(project(":paraglider-vbaa-be-logics"))
+    implementation(project(":paraglider-vbaa-be-service-openapi"))
     implementation(project(":paraglider-vbaa-be-stubs"))
     implementation(project(":paraglider-vbaa-transport-openapi"))
     implementation(project(":paraglider-vbaa-transport-mapping-openapi"))

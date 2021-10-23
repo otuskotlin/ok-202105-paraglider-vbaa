@@ -46,7 +46,7 @@ class MappingTest {
                 schoolId = "1"
             )
         )
-        val context = SchoolContext(stubCase = CommonStubCase.SUCCESS).setQuery(query)
+        val context = SchoolContext().apply { stubCase = CommonStubCase.SUCCESS }.setQuery(query)
         assertEquals("123", context.onRequest)
         assertEquals("https://www.youtube.com/watch?v=HxbexLNDxZI", context.requestSchool.welcomeVideoUrl)
         assertEquals("Maria", context.requestSchool.headOfSchool.name)
@@ -96,8 +96,9 @@ class MappingTest {
                 status = SchoolStatusModel.PENDING_ACTIVATION,
                 permissions = mutableSetOf(PermissionModel.READ)
             ),
-            errors = mutableListOf(CommonErrorModel(level = IError.Level.WARNING, message = "some warning")),
-        )
+        ).apply {
+            errors = mutableListOf(CommonErrorModel(level = IError.Level.WARNING, message = "some warning"))
+        }
 
         val response = context.toUpdateResponse()
         assertEquals("1", response.updatedSchool?.schoolId)

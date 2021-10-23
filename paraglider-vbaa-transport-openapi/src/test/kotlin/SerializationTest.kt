@@ -67,7 +67,7 @@ class SerializationTest {
         val json = om.writeValueAsString(createSchoolRequest)
         val deserialized = om.readValue(json, BaseMessage::class.java) as CreateSchoolRequest
 
-        assertEquals("31.12.1984", deserialized.createSchool?.headOfSchool?.dateOfBirth)
+        assertEquals("1984-12-31", deserialized.createSchool?.headOfSchool?.dateOfBirth)
         assertEquals(requestId, deserialized.requestId)
     }
 }

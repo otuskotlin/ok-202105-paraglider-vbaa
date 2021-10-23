@@ -1,11 +1,24 @@
-package ru.kotlin.paraglider.vbaa.app.ktor.service
-
+import exception.DataNotAllowedException
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.logics.chains.school.SchoolCrudFacade
 import ru.kotlin.paraglider.vbaa.openapi.models.*
 import ru.kotlin.paraglider.vbaa.transport.mapping.openapi.*
 
 class SchoolService(private val schoolCrud: SchoolCrudFacade) {
+
+    suspend fun handleSchool(context: SchoolContext, request: BaseMessage): BaseMessage = try {
+        when (request) {
+            is InitSchoolRequest -> initSchool(context, request)
+            is CreateSchoolRequest -> createSchool(context, request)
+            is GetSchoolRequest -> getSchoolList(context, request)
+            is UpdateSchoolRequest -> updateSchool(context, request)
+            is DeleteSchoolRequest -> deleteSchool(context, request)
+            is SearchSchoolRequest -> searchSchools(context, request)
+            else -> throw DataNotAllowedException("Request is not Allowed", request)
+        }
+    } catch (e: Throwable) {
+        errorSchool(context, e)
+    }
 
     suspend fun createSchool(context: SchoolContext, request: CreateSchoolRequest): CreateSchoolResponse {
         context.setQuery(request)
