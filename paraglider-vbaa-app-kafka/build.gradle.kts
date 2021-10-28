@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":paraglider-vbaa-be-common"))
     implementation(project(":paraglider-vbaa-be-logics"))
     implementation(project(":paraglider-vbaa-be-service-openapi"))
+    implementation(project(":paraglider-vbaa-be-repo-inmemory"))
     implementation(project(":paraglider-vbaa-transport-openapi"))
     implementation(project(":paraglider-vbaa-transport-mapping-openapi"))
 

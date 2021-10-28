@@ -15,21 +15,21 @@ fun schoolFieldsValidation() = Validation<SchoolModel> {
     SchoolModel::name required {
         run(notBlankCheck)
     }
-    SchoolModel::headOfSchool {
-        //later replace with instructor validation function
-        InstructorModel::name required {
-            run(personNameCheck)
-        }
-        InstructorModel::surname required {
-            run(personNameCheck)
-        }
-        InstructorModel::dateOfBirth {
-            addConstraint("Возраст должен быть не менее 14 и не более 100 лет", LocalDate.of(1980,1,1).toString()) {
-                val age = Period.between(it, LocalDate.now()).years
-                age in 14..99
-            }
-        }
-    }
+//    SchoolModel::headOfSchool {
+//        //later replace with instructor validation function
+//        InstructorModel::name required {
+//            run(personNameCheck)
+//        }
+//        InstructorModel::surname required {
+//            run(personNameCheck)
+//        }
+//        InstructorModel::dateOfBirth {
+//            addConstraint("Возраст должен быть не менее 14 и не более 100 лет", LocalDate.of(1980,1,1).toString()) {
+//                val age = Period.between(it, LocalDate.now()).years
+//                age in 14..99
+//            }
+//        }
+//    }
     SchoolModel::location required {
         LocationModel::address {
             run(addressCheck)

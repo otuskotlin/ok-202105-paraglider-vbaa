@@ -4,15 +4,15 @@ abstract class AbstractCorDsl<T>(
     override var title: String = "",
     override var description: String = "",
     private val workers: MutableList<ICorExecDsl<T>> = mutableListOf(),
-    open var blockOn: T.() -> Boolean = { true },
-    open var blockExcept: T.(e: Throwable) -> Unit = { e: Throwable -> throw e }
+    open var blockOn: suspend T.() -> Boolean = { true },
+    open var blockExcept: suspend T.(e: Throwable) -> Unit = { e: Throwable -> throw e }
 ) : ICorChainDsl<T> {
 
-    override fun on(function: T.() -> Boolean) {
+    override fun on(function: suspend T.() -> Boolean) {
         blockOn = function
     }
 
-    override fun except(function: T.(Throwable) -> Unit) {
+    override fun except(function: suspend T.(e: Throwable) -> Unit) {
         blockExcept = function
     }
 

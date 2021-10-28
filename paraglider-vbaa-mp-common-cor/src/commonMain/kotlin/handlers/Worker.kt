@@ -6,7 +6,7 @@ import core.*
 fun <T> ICorChainDsl<T>.worker(
     title: String,
     description: String = "",
-    function: T.() -> Unit
+    function: suspend T.() -> Unit
 ) {
     add(
         CorWorkerDsl<T>(
@@ -27,9 +27,9 @@ fun <T> ICorChainDsl<T>.worker(function: CorWorkerDsl<T>.() -> Unit) {
 class CorWorker<T>(
     override val title: String,
     override val description: String = "",
-    val blockOn: T.() -> Boolean = { true },
-    val blockHandle: T.() -> Unit = {},
-    val blockExcept: T.(Throwable) -> Unit = {}
+    val blockOn: suspend T.() -> Boolean = { true },
+    val blockHandle: suspend T.() -> Unit = {},
+    val blockExcept: suspend T.(Throwable) -> Unit = {}
 ) : ICorWorker<T> {
     override suspend fun on(context: T): Boolean = blockOn(context)
     override suspend fun handle(context: T) = blockHandle(context)
@@ -40,20 +40,20 @@ class CorWorker<T>(
 class CorWorkerDsl<T>(
     override var title: String = "",
     override var description: String = "",
-    var blockOn: T.() -> Boolean = { true },
-    var blockHandle: T.() -> Unit = {},
-    var blockExcept: T.(e: Throwable) -> Unit = { e: Throwable -> throw e }
+    var blockOn: suspend T.() -> Boolean = { true },
+    var blockHandle: suspend T.() -> Unit = {},
+    var blockExcept: suspend T.(e: Throwable) -> Unit = { e: Throwable -> throw e }
 ) : ICorWorkerDsl<T> {
 
-    override fun handle(function: T.() -> Unit) {
+    override fun handle(function: suspend T.() -> Unit) {
         blockHandle = function
     }
 
-    override fun on(function: T.() -> Boolean) {
+    override fun on(function: suspend T.() -> Boolean) {
         blockOn = function
     }
 
-    override fun except(function: T.(e: Throwable) -> Unit) {
+    override fun except(function: suspend T.(e: Throwable) -> Unit) {
         blockExcept = function
     }
 

@@ -76,7 +76,7 @@ class SchoolCrudTest {
         val stubs = SchoolStub.getModels().map { it.copy() }.toMutableList()
 
         val context = SchoolContext(
-            requestSchoolIds = stubs.map(SchoolModel::id).toMutableSet(),
+            requestSchoolIds = stubs.map(SchoolModel::id).toList(),
             operation = CommonOperations.READ
         ).apply {
             stubCase = CommonStubCase.SUCCESS
@@ -139,7 +139,7 @@ class SchoolCrudTest {
         val deleteId = SchoolIdModel("1234")
         val context = SchoolContext(
             operation = CommonOperations.DELETE,
-            requestSchoolIds = setOf(deleteId)
+            requestSchoolIds = listOf(deleteId)
         ).apply {
             stubCase = CommonStubCase.SUCCESS
         }

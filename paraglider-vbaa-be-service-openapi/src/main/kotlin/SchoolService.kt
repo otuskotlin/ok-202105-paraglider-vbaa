@@ -55,7 +55,7 @@ class SchoolService(private val schoolCrud: SchoolCrudFacade) {
         return context.toInitResponse()
     }
 
-    fun errorSchool(context: SchoolContext, e: Throwable): BaseMessage {
+    suspend fun errorSchool(context: SchoolContext, e: Throwable): BaseMessage {
         context.addError(e)
         return context.toGetResponse()
     }

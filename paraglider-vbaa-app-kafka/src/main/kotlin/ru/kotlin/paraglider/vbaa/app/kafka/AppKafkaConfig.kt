@@ -1,5 +1,6 @@
 package ru.kotlin.paraglider.vbaa.app.kafka
 
+import RepoSchoolInMemory
 import SchoolService
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerConfig
@@ -9,7 +10,9 @@ import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
+import ru.kotlin.paraglider.vbaa.be.common.context.ContextConfig
 import ru.kotlin.paraglider.vbaa.be.logics.chains.school.SchoolCrudFacade
+import java.time.Duration
 import java.util.*
 
 data class AppKafkaConfig(
@@ -17,6 +20,10 @@ data class AppKafkaConfig(
     val kafkaTopicIn: String = KAFKA_TOPIC_IN,
     val kafkaTopicOut: String = KAFKA_TOPIC_OUT,
     val kafkaGroupId: String = KAFKA_GROUP_ID,
+    val contextConfig: ContextConfig = ContextConfig(
+        repoProd = RepoSchoolInMemory(initObjects = listOf(), ttl = Duration.ofHours(1)),
+        repoTest = RepoSchoolInMemory(initObjects = listOf()),
+    ),
     val service: SchoolService = SchoolService(SchoolCrudFacade()),
     val kafkaConsumer: Consumer<String, String> = kafkaConsumer(kafkaHosts, kafkaGroupId),
     val kafkaProducer: Producer<String, String> = kafkaProducer(kafkaHosts)

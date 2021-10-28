@@ -62,7 +62,7 @@ class MappingTest {
     fun updateResponseMappingTest() {
         val context = SchoolContext(
             onRequest = "321",
-            requestSchoolIds = setOf(SchoolIdModel("1")),
+            requestSchoolIds = listOf(SchoolIdModel("1")),
             responseSchool = SchoolModel(
                 id = SchoolIdModel("1"),
                 name = "My Sky",

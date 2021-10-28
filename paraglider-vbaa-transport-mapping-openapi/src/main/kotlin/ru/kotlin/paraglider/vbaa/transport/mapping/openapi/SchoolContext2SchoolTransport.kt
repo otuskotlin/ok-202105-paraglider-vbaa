@@ -5,7 +5,6 @@ import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.exception.OperationNotSetException
 import ru.kotlin.paraglider.vbaa.be.common.models.*
 import ru.kotlin.paraglider.vbaa.openapi.models.*
-import java.time.Instant
 import java.time.LocalDate
 
 
