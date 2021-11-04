@@ -70,12 +70,35 @@ class RepoSchoolInMemory(
     override suspend fun create(rq: DbSchoolModelRequest): DbSchoolResponse =
         save(rq.school.copy(id = SchoolIdModel(UUID.randomUUID().toString())))
 
-    override suspend fun read(rq: DbSchoolIdListRequest): DbSchoolListResponse {
-       return DbSchoolListResponse (
-            result = rq.idList.map { cache.get(it.id).toInternal() }.toList(),
-            isSuccess = true
+    override suspend fun read(rq: DbSchoolIdListRequest): DbSchoolListResponse =
+        cache.getAll(rq.idList.map { it.asString() }.toSet())?.let {
+            val result = it.values.mapNotNull{
+                it?.let { it.toInternal() } ?:
+                return@let DbSchoolListResponse(
+                    result = null,
+                    isSuccess = false,
+                    errors = listOf(
+                        CommonErrorModel(
+                            field = "id",
+                            message = "Not Found"
+                        )
+                    )
+                )
+            }.toList()
+            return DbSchoolListResponse (
+                result = result,
+                isSuccess = true
+            )
+        } ?: DbSchoolListResponse(
+            result = null,
+            isSuccess = false,
+            errors = listOf(
+                CommonErrorModel(
+                    field = "idList",
+                    message = "Not Found"
+                )
+            )
         )
-    }
 
     override suspend fun update(rq: DbSchoolModelRequest): DbSchoolResponse {
         val key = rq.school.id.takeIf { it != SchoolIdModel.NONE }?.asString()
