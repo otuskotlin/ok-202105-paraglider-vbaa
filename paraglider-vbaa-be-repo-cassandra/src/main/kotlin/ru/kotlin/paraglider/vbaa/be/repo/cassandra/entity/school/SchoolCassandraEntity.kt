@@ -12,7 +12,6 @@ import ru.kotlin.paraglider.vbaa.be.repo.cassandra.entity.common.PermissionEntit
 // Notion
 // School and Instructor are separate microservices
 // we store only their ids to have front-end to send corresponding request
-
 //DO NOT use inner Model in Entity models
 @Entity
 data class SchoolCassandraEntity(
@@ -44,7 +43,7 @@ data class SchoolCassandraEntity(
     @CqlName(COLUMN_INSTRUCTORS)
     var instructors: Set<String>? = null,
     //set of service ids
-    @CqlName(COLUMN_SERVICE_BASIC_INFO)
+    @CqlName(COLUMN_SERVICES)
     var services: Set<String>? = null,
     @CqlName(COLUMN_STATUS)
     var status: SchoolStatusEntity? = null,
@@ -69,10 +68,10 @@ data class SchoolCassandraEntity(
         permissions = schoolModel.permissions.takeIf { it.isNotEmpty() }?.map { PermissionEntity.valueOf(it.name) }?.toMutableSet()
     )
 
-    fun toSchoolModel(): SchoolModel = SchoolModel(
+    fun toModel(): SchoolModel = SchoolModel(
         id = id?.let { SchoolIdModel(it) } ?: SchoolIdModel.NONE,
         name = name ?: "",
-        welcomeVideoUrl =welcomeVideoUrl ?: "",
+        welcomeVideoUrl = welcomeVideoUrl ?: "",
         shortInfo = shortInfo ?: "",
         location = LocationModel(
             address = address ?: "",
@@ -92,39 +91,44 @@ data class SchoolCassandraEntity(
 
     companion object {
         const val TABLE_NAME = "school"
+
         const val COLUMN_ID = "id"
         const val COLUMN_NAME = "name"
         const val COLUMN_WELCOME_VIDEO_URL = "welcome_video_url"
-        const val COLUMN_HEAD_OF_SCHOOL = "head_of_school_id"
+        const val COLUMN_HEAD_OF_SCHOOL = "head_of_school"
         const val COLUMN_SHORT_INFO = "short_info"
         const val COLUMN_ADDRESS = "address"
         const val COLUMN_GEOLOCATION = "geolocation"
         const val COLUMN_LOCATION_SHORT_INFO = "location_short_info"
-        const val COLUMN_INSTRUCTORS = "instructor_ids"
-        const val COLUMN_MOBILE_PHONES = "mobile_phone_list"
-        const val COLUMN_SOCIAL_MEDIA = "social_media_list"
+        const val COLUMN_INSTRUCTORS = "instructors"
+        const val COLUMN_MOBILE_PHONES = "mobile_phones"
+        const val COLUMN_SOCIAL_MEDIA = "social_media"
         const val COLUMN_EMAIL = "email"
-        const val COLUMN_SERVICE_BASIC_INFO = "service_basic_info"
+        const val COLUMN_SERVICES = "services"
         const val COLUMN_STATUS = "status"
         const val COLUMN_PERMISSIONS = "permissions"
-    }
 
-    fun table(keyspace: String, tableName: String) =
-        SchemaBuilder
-            .createTable(keyspace, tableName)
-            .withPartitionKey(COLUMN_ID, DataTypes.TEXT)
-            .withColumn(COLUMN_NAME, DataTypes.TEXT)
-            .withColumn(COLUMN_WELCOME_VIDEO_URL, DataTypes.TEXT)
-            .withColumn(COLUMN_HEAD_OF_SCHOOL, DataTypes.TEXT)
-            .withColumn(COLUMN_SHORT_INFO, DataTypes.TEXT)
-            .withColumn(COLUMN_ADDRESS, DataTypes.TEXT)
-            .withColumn(COLUMN_GEOLOCATION, DataTypes.TEXT)
-            .withColumn(COLUMN_LOCATION_SHORT_INFO, DataTypes.TEXT)
-            .withColumn(COLUMN_INSTRUCTORS, DataTypes.setOf(DataTypes.TEXT))
-            .withColumn(COLUMN_MOBILE_PHONES, DataTypes.listOf(DataTypes.TEXT))
-            .withColumn(COLUMN_SOCIAL_MEDIA, DataTypes.listOf(DataTypes.TEXT))
-            .withColumn(COLUMN_EMAIL, DataTypes.TEXT)
-            .withColumn(COLUMN_SERVICE_BASIC_INFO, DataTypes.setOf(DataTypes.TEXT))
-            .withColumn(COLUMN_STATUS, DataTypes.TEXT)
-            .withColumn(COLUMN_PERMISSIONS, DataTypes.setOf(DataTypes.TEXT))
+        //TODO fix with cassandra-migration tool
+        fun table(keyspace: String, tableName: String) =
+            SchemaBuilder
+                .createTable(keyspace, tableName)
+                .ifNotExists()
+                .withPartitionKey(COLUMN_ID, DataTypes.TEXT)
+                .withColumn(COLUMN_NAME, DataTypes.TEXT)
+                .withColumn(COLUMN_WELCOME_VIDEO_URL, DataTypes.TEXT)
+                .withColumn(COLUMN_HEAD_OF_SCHOOL, DataTypes.TEXT)
+                .withColumn(COLUMN_SHORT_INFO, DataTypes.TEXT)
+                .withColumn(COLUMN_ADDRESS, DataTypes.TEXT)
+                .withColumn(COLUMN_GEOLOCATION, DataTypes.TEXT)
+                .withColumn(COLUMN_LOCATION_SHORT_INFO, DataTypes.TEXT)
+                .withColumn(COLUMN_INSTRUCTORS, DataTypes.setOf(DataTypes.TEXT))
+                .withColumn(COLUMN_MOBILE_PHONES, DataTypes.listOf(DataTypes.TEXT))
+                .withColumn(COLUMN_SOCIAL_MEDIA, DataTypes.listOf(DataTypes.TEXT))
+                .withColumn(COLUMN_EMAIL, DataTypes.TEXT)
+                .withColumn(COLUMN_SERVICES, DataTypes.setOf(DataTypes.TEXT))
+                .withColumn(COLUMN_STATUS, DataTypes.TEXT)
+                .withColumn(COLUMN_PERMISSIONS, DataTypes.setOf(DataTypes.TEXT))
+                .build()
+
+    }
 }

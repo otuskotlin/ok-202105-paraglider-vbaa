@@ -13,10 +13,10 @@ abstract class RepoSchoolSearchTest {
 
     @Test
     fun searchName() {
-        val result = runBlocking { repo.search(DbSchoolFilterRequest(name = "My Sky")) }
+        val result = runBlocking { repo.search(DbSchoolFilterRequest(searchStr = "My Sky")) }
         assertEquals(true, result.isSuccess)
         val expected = listOf(initObjects[1])
-        assertEquals(expected.sortedBy { it.id.asString() }, result.result?.sortedBy { it.id.asString() })
+        assertEquals(expected.sortedBy { it.id.asString() }, result.result.sortedBy { it.id.asString() })
         assertEquals(emptyList(), result.errors)
     }
 
@@ -25,7 +25,7 @@ abstract class RepoSchoolSearchTest {
         val result = runBlocking { repo.search(DbSchoolFilterRequest(location = LocationModel(address = "Podolsk"))) }
         assertEquals(true, result.isSuccess)
         val expected = listOf(initObjects[2], initObjects[3])
-        assertEquals(expected.sortedBy { it.id.asString() }, result.result?.sortedBy { it.id.asString() })
+        assertEquals(expected.sortedBy { it.id.asString() }, result.result.sortedBy { it.id.asString() })
         assertEquals(emptyList(), result.errors)
     }
 
@@ -34,7 +34,7 @@ abstract class RepoSchoolSearchTest {
         val result = runBlocking { repo.search(DbSchoolFilterRequest(contactInfo = ContactInfoModel(email = "paragliding@gmail.com"))) }
         assertEquals(true, result.isSuccess)
         val expected = listOf(initObjects[4])
-        assertEquals(expected.sortedBy { it.id.asString() }, result.result?.sortedBy { it.id.asString() })
+        assertEquals(expected.sortedBy { it.id.asString() }, result.result.sortedBy { it.id.asString() })
         assertEquals(emptyList(), result.errors)
     }
 
