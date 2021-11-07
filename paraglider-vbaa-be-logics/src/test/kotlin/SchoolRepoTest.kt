@@ -19,7 +19,7 @@ class SchoolRepoTest {
             repoTest = repo
         ))
         val stub = SchoolStub.getModel().apply {
-            headOfSchool = InstructorModel()
+            headOfSchool = InstructorIdModel(id = "uuid-456")
         }
 
         val context = SchoolContext(
@@ -40,9 +40,9 @@ class SchoolRepoTest {
             assertEquals(stub.headOfSchool, headOfSchool)
             assertEquals(stub.shortInfo, shortInfo)
             assertEquals(stub.location, location)
-            assertEquals(stub.instructorList, instructorList)
+            assertEquals(stub.instructors, instructors)
             assertEquals(stub.contactInfo, contactInfo)
-            assertEquals(stub.serviceBasicInfo, serviceBasicInfo)
+            assertEquals(stub.services, services)
             assertEquals(stub.status, status)
         }
     }

@@ -62,24 +62,24 @@ fun UpdateSchool.toModel() = SchoolModel(
     id = SchoolIdModel(schoolId ?: ""),
     name = name ?: "",
     welcomeVideoUrl = welcomeVideoUrl ?: "",
-    headOfSchool = headOfSchool?.toModel() ?: InstructorModel(),
+    headOfSchool = headOfSchool?.let { InstructorIdModel(it) } ?: InstructorIdModel.NONE,
     shortInfo = shortInfo ?: "",
     location = location?.toModel() ?: LocationModel(),
-    instructorList = instructorList?.map { it.toModel() } ?: mutableListOf(),
+    instructors = instructors.orEmpty().map { InstructorIdModel(it) }.toMutableSet(),
     contactInfo = contactInfo?.toModel() ?: ContactInfoModel(),
-    serviceBasicInfo = serviceBasicInfo ?: mutableListOf(),
+    services = services.orEmpty().map { ServiceIdModel(it) }.toMutableSet(),
     status = status?.let { SchoolStatusModel.valueOf(it.name) } ?: SchoolStatusModel.NONE
 )
 
 fun SchoolDTO.toModel() = SchoolModel(
     name = name ?: "",
     welcomeVideoUrl = welcomeVideoUrl ?: "",
-    headOfSchool = headOfSchool?.toModel() ?: InstructorModel(),
+    headOfSchool = headOfSchool?.let { InstructorIdModel(it) } ?: InstructorIdModel.NONE,
     shortInfo = shortInfo ?: "",
     location = location?.toModel() ?: LocationModel(),
-    instructorList = instructorList?.map { it.toModel() } ?: mutableListOf(),
+    instructors = instructors.orEmpty().map { InstructorIdModel(it) }.toMutableSet(),
     contactInfo = contactInfo?.toModel() ?: ContactInfoModel(),
-    serviceBasicInfo = serviceBasicInfo ?: mutableListOf(),
+    services = services.orEmpty().map { ServiceIdModel(it) }.toMutableSet(),
     status = status?.let { SchoolStatusModel.valueOf(it.name) } ?: SchoolStatusModel.NONE
 )
 

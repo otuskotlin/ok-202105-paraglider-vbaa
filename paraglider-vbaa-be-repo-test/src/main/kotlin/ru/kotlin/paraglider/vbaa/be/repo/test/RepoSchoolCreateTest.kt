@@ -38,7 +38,9 @@ abstract class RepoSchoolCreateTest {
                 socialMedia = listOf("create object socialMedia 1"),
                 email = "create object email"
             ),
-            serviceBasicInfo = listOf("create object service 1"),
+            headOfSchool = InstructorIdModel("uuid-123"),
+            instructors = emptySet(),
+            services = emptySet(),
             status = SchoolStatusModel.ACTIVE
         )
         override val initObjects: List<SchoolModel> = emptyList()

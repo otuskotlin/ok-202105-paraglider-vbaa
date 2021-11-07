@@ -28,7 +28,7 @@ abstract class RepoSchoolReadTest {
         val result = runBlocking { repo.read(DbSchoolIdListRequest(listOf(notFoundId))) }
 
         assertEquals(false, result.isSuccess)
-        assertEquals(null, result.result)
+        assertEquals(emptyList(), result.result)
         assertEquals(
             CommonErrorModel(field = "idList", message = "Not Found").message,
             result.errors.first().message

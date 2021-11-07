@@ -14,9 +14,8 @@ internal fun ICorChainDsl<SchoolContext>.repoSchoolSearch(title: String)= worker
 
     handle {
         val result = schoolRepo.search(requestFilter)
-        val resultValue = result.result
         if (result.isSuccess) {
-            responseSchoolList =  resultValue
+            responseSchoolList = result.result.toMutableList()
         } else {
             result.errors.forEach {
                 addError(it)

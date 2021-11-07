@@ -25,7 +25,9 @@ abstract class BaseInitSchools: IInitObjects<SchoolModel> {
             socialMedia = listOf("$prefix stub socialMedia 1"),
             email = email
         ),
-        serviceBasicInfo = listOf("$prefix stub service 1"),
+        headOfSchool = InstructorIdModel("uuid-123"),
+        instructors = emptySet(),
+        services = emptySet(),
         status = SchoolStatusModel.ACTIVE
     )
 }

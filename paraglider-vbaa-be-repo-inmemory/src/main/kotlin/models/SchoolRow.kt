@@ -11,7 +11,9 @@ data class SchoolRow(
     val shortInfo: String? = null,
     val location: LocationRow? = null,
     val contactInfo: ContactInfoRow? = null,
-    val serviceBasicInfo: List<String>? = null,
+    val headOfSchool: String? = null,
+    val instructors: Set<String>? = null,
+    val services: Set<String>? = null,
     val status: String? = null
 ): Serializable {
     constructor(internal: SchoolModel): this(
@@ -21,8 +23,10 @@ data class SchoolRow(
         shortInfo = internal.shortInfo.takeIf { it.isNotBlank() },
         location = LocationRow(internal.location),
         contactInfo = ContactInfoRow(internal.contactInfo),
-        serviceBasicInfo = internal.serviceBasicInfo,
-        status = internal.status.toString()
+        headOfSchool = internal.headOfSchool.takeIf { it != InstructorIdModel.NONE }?.asString(),
+        instructors = internal.instructors.takeIf { it.isNotEmpty() }?.map { it.asString() }?.toMutableSet(),
+        services = internal.services.map{ it.asString() }.toMutableSet(),
+        status = internal.status.toString(),
     )
     fun toInternal(): SchoolModel = SchoolModel(
         id = id?.let { SchoolIdModel(it) } ?: SchoolIdModel.NONE,
@@ -31,7 +35,9 @@ data class SchoolRow(
         shortInfo = shortInfo ?: "",
         location = location?.toInternal() ?: LocationModel(),
         contactInfo = contactInfo?.toInternal() ?: ContactInfoModel(),
-        serviceBasicInfo = serviceBasicInfo?.filter { it.isNotBlank() }?.toList() ?: emptyList(),
+        headOfSchool = headOfSchool?.let { InstructorIdModel(it) } ?: InstructorIdModel.NONE,
+        instructors = instructors.orEmpty().map { InstructorIdModel(it) }.toMutableSet(),
+        services = services.orEmpty().map { ServiceIdModel(it) }.toMutableSet(),
         status = status?.let { SchoolStatusModel.valueOf(it) } ?: SchoolStatusModel.NONE,
     )
 }

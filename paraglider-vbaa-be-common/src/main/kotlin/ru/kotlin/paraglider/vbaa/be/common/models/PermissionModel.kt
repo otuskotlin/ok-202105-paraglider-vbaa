@@ -5,5 +5,6 @@ enum class PermissionModel {
     READ,
     UPDATE,
     DELETE,
-    CREATE
+    CREATE,
+    ALL
 }

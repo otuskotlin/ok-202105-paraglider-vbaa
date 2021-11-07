@@ -53,7 +53,9 @@ abstract class RepoSchoolUpdateTest {
                 socialMedia = listOf("update object socialMedia 1"),
                 email = "update object email"
             ),
-            serviceBasicInfo = listOf("update object service 1"),
+            headOfSchool = InstructorIdModel("uuid-123"),
+            instructors = emptySet(),
+            services = emptySet(),
             status = SchoolStatusModel.ACTIVE
         )
 
@@ -72,7 +74,9 @@ abstract class RepoSchoolUpdateTest {
                 socialMedia = listOf("update object not found socialMedia 1"),
                 email = "update object not found email"
             ),
-            serviceBasicInfo = listOf("update object not found service 1"),
+            headOfSchool = InstructorIdModel("uuid-123"),
+            instructors = emptySet(),
+            services = emptySet(),
             status = SchoolStatusModel.ACTIVE
         )
     }

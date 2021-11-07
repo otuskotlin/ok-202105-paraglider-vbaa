@@ -75,7 +75,7 @@ class RepoSchoolInMemory(
             val result = it.values.mapNotNull{
                 it?.let { it.toInternal() } ?:
                 return@let DbSchoolListResponse(
-                    result = null,
+                    result = emptyList(),
                     isSuccess = false,
                     errors = listOf(
                         CommonErrorModel(
@@ -90,7 +90,7 @@ class RepoSchoolInMemory(
                 isSuccess = true
             )
         } ?: DbSchoolListResponse(
-            result = null,
+            result = emptyList(),
             isSuccess = false,
             errors = listOf(
                 CommonErrorModel(

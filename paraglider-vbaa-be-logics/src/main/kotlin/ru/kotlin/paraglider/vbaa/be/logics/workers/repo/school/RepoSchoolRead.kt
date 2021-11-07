@@ -15,9 +15,8 @@ internal fun ICorChainDsl<SchoolContext>.repoSchoolRead(title: String) = worker 
 
     handle {
         val result = schoolRepo.read(DbSchoolIdListRequest(idList = requestSchoolIds))
-        val resultValue = result.result
         if (result.isSuccess) {
-            responseSchoolList =  resultValue
+            responseSchoolList =  result.result.toMutableList()
         } else {
             result.errors.forEach {
                 addError(it)
