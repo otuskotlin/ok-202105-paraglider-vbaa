@@ -14,31 +14,15 @@ class SerializationTest {
             name = "MyNebo",
             shortInfo = "Flying school in Moscow area",
             welcomeVideoUrl = "some_url",
-            headOfSchool = InstructorDTO(
-                name = "Maria",
-                surname = "Viklayeva",
-                patronymic = "Igorevna",
-                dateOfBirth = "1984-12-31",
-                hoursOfFly = 1000,
-                flyLocations = setOf(
-                    "Chegem", "Babadag", "Krusevo",
-                    "Marokko", "Юца", "Serbia", "Albania", "Alania"
-                ),
-                shortInfo = "Paragliding is my life",
-                certificateUrl = "some_cert_url",
-                mobilePhone = "89661234567",
-//                photo = File("/pic.jpg"),
-                photo = "/pic.jpg",
-                schoolIdList = setOf("1")
-            ),
+            headOfSchool = "123",
             contactInfo = ContactInfoDTO(
                 socialMedia = listOf("instagram.com")
             ),
             location = LocationDTO(
                 address = "Moscow area, Podolsk"
             ),
-            serviceBasicInfo = listOf("Some service 1"),
-            instructorList = emptyList()
+            services = setOf(),
+            instructors = emptySet()
         ),
         debug = BaseDebugRequest(
             mode = BaseDebugRequest.Mode.STUB
@@ -58,7 +42,7 @@ class SerializationTest {
             json.contains(""""name":"${createSchoolRequest.createSchool?.name}"""")
         }
         assertTrue("json must contain school name") {
-            json.contains(""""mobilePhone":"${createSchoolRequest.createSchool?.headOfSchool?.mobilePhone}"""")
+            json.contains(""""address":"${createSchoolRequest.createSchool?.location?.address}"""")
         }
     }
 
@@ -67,7 +51,6 @@ class SerializationTest {
         val json = om.writeValueAsString(createSchoolRequest)
         val deserialized = om.readValue(json, BaseMessage::class.java) as CreateSchoolRequest
 
-        assertEquals("1984-12-31", deserialized.createSchool?.headOfSchool?.dateOfBirth)
         assertEquals(requestId, deserialized.requestId)
     }
 }

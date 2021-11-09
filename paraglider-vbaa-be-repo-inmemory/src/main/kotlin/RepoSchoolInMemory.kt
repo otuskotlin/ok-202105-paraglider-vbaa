@@ -158,8 +158,8 @@ class RepoSchoolInMemory(
     override suspend fun search(rq: DbSchoolFilterRequest): DbSchoolListResponse {
         val results = cache.asFlow()
             .filter {
-                if (rq.name.isBlank()) return@filter true
-                rq.name == it.value.name
+                if (rq.searchStr.isBlank()) return@filter true
+                rq.searchStr == it.value.name
             }
             .filter {
                 if (rq.location.address.isBlank()) return@filter true
