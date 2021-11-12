@@ -21,6 +21,7 @@ data class AppKafkaConfig(
     val kafkaTopicOut: String = KAFKA_TOPIC_OUT,
     val kafkaGroupId: String = KAFKA_GROUP_ID,
     val contextConfig: ContextConfig = ContextConfig(
+        //TODO change to Cassandra DB
         repoProd = RepoSchoolInMemory(initObjects = listOf(), ttl = Duration.ofHours(1)),
         repoTest = RepoSchoolInMemory(initObjects = listOf()),
     ),
