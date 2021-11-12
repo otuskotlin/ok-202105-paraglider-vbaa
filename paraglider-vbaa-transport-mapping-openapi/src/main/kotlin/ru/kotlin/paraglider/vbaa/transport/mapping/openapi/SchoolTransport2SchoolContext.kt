@@ -5,8 +5,6 @@ import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.models.*
 import ru.kotlin.paraglider.vbaa.openapi.models.*
 import java.net.URL
-import java.net.URLEncoder
-import java.time.Instant
 import java.time.LocalDate
 
 fun SchoolContext.setQuery(query: InitSchoolRequest) = apply {
@@ -18,36 +16,41 @@ fun SchoolContext.setQuery(query: CreateSchoolRequest) = apply {
     operation = CommonOperations.CREATE
     onRequest = query.requestId ?: ""
     requestSchool = query.createSchool?.toModel() ?: SchoolModel()
-    stubCase = query.debug?.stubCase.toModel()
+    workMode = query.debug?.mode.toModel()
+    stubCase = query.debug?.stubCase?.takeIf { workMode == WorkMode.STUB }.toModel()
 }
 
 fun SchoolContext.setQuery(query: GetSchoolRequest) = apply {
     operation = CommonOperations.READ
     onRequest = query.requestId ?: ""
-    requestSchoolIds = query.schoolIdList?.map { value -> SchoolIdModel(value) }?.toSet() ?: mutableSetOf()
-    stubCase = query.debug?.stubCase.toModel()
+    requestSchoolIds = query.schoolIdList?.map { value -> SchoolIdModel(value) }?.toList() ?: mutableListOf()
+    workMode = query.debug?.mode.toModel()
+    stubCase = query.debug?.stubCase?.takeIf { workMode == WorkMode.STUB }.toModel()
 }
 
 fun SchoolContext.setQuery(query: UpdateSchoolRequest) = apply {
     operation = CommonOperations.UPDATE
     onRequest = query.requestId ?: ""
     requestSchool = query.updateSchool?.toModel() ?: SchoolModel()
-    stubCase = query.debug?.stubCase.toModel()
+    workMode = query.debug?.mode.toModel()
+    stubCase = query.debug?.stubCase?.takeIf { workMode == WorkMode.STUB }.toModel()
 }
 
 
 fun SchoolContext.setQuery(query: DeleteSchoolRequest) = apply {
     operation = CommonOperations.DELETE
     onRequest = query.requestId ?: ""
-    requestSchoolIds = setOf(SchoolIdModel(query.schoolId ?: ""))
-    stubCase = query.debug?.stubCase.toModel()
+    requestSchoolIds = listOf(SchoolIdModel(query.schoolId ?: ""))
+    workMode = query.debug?.mode.toModel()
+    stubCase = query.debug?.stubCase?.takeIf { workMode == WorkMode.STUB }.toModel()
 }
 
 fun SchoolContext.setQuery(query: SearchSchoolRequest) = apply {
     operation = CommonOperations.SEARCH
     onRequest = query.requestId ?: ""
     requestPage = query.page?.toModel() ?: PaginatedModel()
-    stubCase = query.debug?.stubCase.toModel()
+    workMode = query.debug?.mode.toModel()
+    stubCase = query.debug?.stubCase?.takeIf { workMode == WorkMode.STUB }.toModel()
 }
 
 fun BasePaginatedRequest.toModel() = PaginatedModel(
@@ -59,24 +62,24 @@ fun UpdateSchool.toModel() = SchoolModel(
     id = SchoolIdModel(schoolId ?: ""),
     name = name ?: "",
     welcomeVideoUrl = welcomeVideoUrl ?: "",
-    headOfSchool = headOfSchool?.toModel() ?: InstructorModel(),
+    headOfSchool = headOfSchool?.let { InstructorIdModel(it) } ?: InstructorIdModel.NONE,
     shortInfo = shortInfo ?: "",
     location = location?.toModel() ?: LocationModel(),
-    instructorList = instructorList?.map { it.toModel() } ?: mutableListOf(),
+    instructors = instructors.orEmpty().map { InstructorIdModel(it) }.toMutableSet(),
     contactInfo = contactInfo?.toModel() ?: ContactInfoModel(),
-    serviceBasicInfo = serviceBasicInfo ?: mutableListOf(),
+    services = services.orEmpty().map { ServiceIdModel(it) }.toMutableSet(),
     status = status?.let { SchoolStatusModel.valueOf(it.name) } ?: SchoolStatusModel.NONE
 )
 
 fun SchoolDTO.toModel() = SchoolModel(
     name = name ?: "",
     welcomeVideoUrl = welcomeVideoUrl ?: "",
-    headOfSchool = headOfSchool?.toModel() ?: InstructorModel(),
+    headOfSchool = headOfSchool?.let { InstructorIdModel(it) } ?: InstructorIdModel.NONE,
     shortInfo = shortInfo ?: "",
     location = location?.toModel() ?: LocationModel(),
-    instructorList = instructorList?.map { it.toModel() } ?: mutableListOf(),
+    instructors = instructors.orEmpty().map { InstructorIdModel(it) }.toMutableSet(),
     contactInfo = contactInfo?.toModel() ?: ContactInfoModel(),
-    serviceBasicInfo = serviceBasicInfo ?: mutableListOf(),
+    services = services.orEmpty().map { ServiceIdModel(it) }.toMutableSet(),
     status = status?.let { SchoolStatusModel.valueOf(it.name) } ?: SchoolStatusModel.NONE
 )
 
@@ -111,4 +114,11 @@ private fun BaseDebugRequest.StubCase?.toModel() = when(this) {
     BaseDebugRequest.StubCase.SUCCESS -> CommonStubCase.SUCCESS
     BaseDebugRequest.StubCase.DATABASE_ERROR -> CommonStubCase.DATABASE_ERROR
     null -> CommonStubCase.NONE
+}
+
+private fun BaseDebugRequest.Mode?.toModel() = when(this) {
+    BaseDebugRequest.Mode.STUB -> WorkMode.STUB
+    BaseDebugRequest.Mode.TEST -> WorkMode.TEST
+    BaseDebugRequest.Mode.PROD -> WorkMode.PROD
+    null -> WorkMode.PROD
 }

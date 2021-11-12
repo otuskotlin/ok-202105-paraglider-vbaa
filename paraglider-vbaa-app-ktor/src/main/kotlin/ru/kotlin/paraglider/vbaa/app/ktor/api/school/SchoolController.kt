@@ -5,7 +5,6 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.openapi.models.*
-import java.time.Instant
 
 class SchoolController(private val schoolService: SchoolService) {
     suspend fun createSchool(request: CreateSchoolRequest): CreateSchoolResponse {
@@ -63,7 +62,7 @@ class SchoolController(private val schoolService: SchoolService) {
         } as DeleteSchoolResponse
     }
 
-    fun initSchool(request: InitSchoolRequest): InitSchoolResponse {
+    suspend fun initSchool(request: InitSchoolRequest): InitSchoolResponse {
         val context = SchoolContext()
         return try {
             schoolService.initSchool(context, request)

@@ -14,23 +14,7 @@ object SchoolStub {
             name = "MyNebo",
             shortInfo = "Flying school in Moscow area",
             welcomeVideoUrl = "someUrl.com",
-            headOfSchool = InstructorDTO(
-                name = "Maria",
-                surname = "Viklayeva",
-                patronymic = "",
-                dateOfBirth = "1984-12-31",
-                hoursOfFly = 1000,
-                flyLocations = setOf(
-                    "Chegem", "Babadag", "Krusevo",
-                    "Marokko", "Юца", "Serbia", "Albania", "Alania"
-                ),
-                shortInfo = "Paragliding is my life",
-                certificateUrl = "https://my-nebo.ru",
-                mobilePhone = "89661234567",
-//                photo = File("/pic.jpg"),
-                photo = "photo_url",
-                schoolIdList = setOf("123")
-            ),
+            headOfSchool = "uuid-456",
             contactInfo = ContactInfoDTO(
                 mobilePhones = listOf("89660000000"),
                 socialMedia = listOf("someVkUrl", "@my_nebo.ru"),
@@ -41,8 +25,8 @@ object SchoolStub {
                 geolocation = "55.00, 44.00",
                 shortInfo = "Turn to the left after Cafe"
             ),
-            serviceBasicInfo = listOf("adjust harness", "straps stretch out"),
-            instructorList = emptyList(),
+            services = emptySet(),
+            instructors = emptySet(),
             status = SchoolStatusDTO.ACTIVE
         ),
         debug = BaseDebugRequest(
@@ -54,35 +38,20 @@ object SchoolStub {
         id = SchoolIdModel(id = "123"),
         name = "MyNebo",
         welcomeVideoUrl = "someUrl.com",
-        headOfSchool = InstructorModel(
-            schoolIdList = setOf(SchoolIdModel(id = "123")),
-            name = "Maria",
-            surname = "Viklayeva",
-            patronymic = "",
-            dateOfBirth = LocalDate.of(1984, 12, 31),
-            shortInfo = "Paragliding is my life",
-            photo = "photo_url",
-            hoursOfFly = 1000,
-            flyLocations = mutableSetOf(
-                "Chegem", "Babadag", "Krusevo",
-                "Marokko", "Юца", "Serbia", "Albania", "Alania"
-            ),
-            certificateUrl = URL("https://my-nebo.ru"),
-            mobilePhone = "89661234567"
-        ),
+        headOfSchool = InstructorIdModel(id = "uuid-456"),
         shortInfo = "Flying school in Moscow area",
         location = LocationModel(
             address = "Moscow area, Voronovo",
             geolocation = "55.00, 44.00",
             shortInfo = "Turn to the left after Cafe"
         ),
-        instructorList = listOf(),
+        instructors = emptySet(),
         contactInfo = ContactInfoModel(
             mobilePhones = listOf("89660000000"),
             socialMedia = listOf("someVkUrl", "@my_nebo.ru"),
             email = "someEmail@ya.ru"
         ),
-        serviceBasicInfo = mutableListOf("adjust harness", "straps stretch out"),
+        services = emptySet(),
         status = SchoolStatusModel.ACTIVE,
         permissions = mutableSetOf(PermissionModel.READ)
     )
@@ -91,35 +60,20 @@ object SchoolStub {
         id = SchoolIdModel(id = "444"),
         name = "Infinity Sky",
         welcomeVideoUrl = "someUrl.com",
-        headOfSchool = InstructorModel(
-            schoolIdList = setOf(SchoolIdModel(id = "444")),
-            name = "Liza",
-            surname = "Demina",
-            patronymic = "",
-            dateOfBirth = LocalDate.of(1989, 8, 11),
-            shortInfo = "Fly Paragliding",
-            photo = "photo_url",
-            hoursOfFly = 1000,
-            flyLocations = mutableSetOf(
-                "Chegem", "Babadag", "Krusevo",
-                "Marokko", "Юца", "Serbia", "Albania", "Alania"
-            ),
-            certificateUrl = URL("https://fly-paragliding.ru"),
-            mobilePhone = "89110002233"
-        ),
+        headOfSchool = InstructorIdModel(id = "uuid-111"),
         shortInfo = "Paragliding school in Moscow",
         location = LocationModel(
             address = "Moscow area, Letovo",
             geolocation = "51.00, 41.00",
             shortInfo = "8 km from MKAD"
         ),
-        instructorList = listOf(),
+        instructors = emptySet(),
         contactInfo = ContactInfoModel(
             mobilePhones = listOf("89331112233"),
             socialMedia = listOf("someVkUrl", "@fly_paragliding"),
             email = "someEmail@ya.ru"
         ),
-        serviceBasicInfo = mutableListOf("adjust harness", "straps stretch out"),
+        services = emptySet(),
         status = SchoolStatusModel.ACTIVE,
         permissions = mutableSetOf(PermissionModel.READ)
     )
@@ -140,32 +94,20 @@ object SchoolStub {
     val responseSchoolStubOne = ResponseSchool(
         name = schoolStubOne.name,
         welcomeVideoUrl = schoolStubOne.welcomeVideoUrl,
-        headOfSchool = InstructorDTO(
-            schoolIdList = schoolStubOne.headOfSchool.schoolIdList.map{it.asString()}.toSet(),
-            name = schoolStubOne.headOfSchool.name,
-            surname = schoolStubOne.headOfSchool.surname,
-            patronymic = null,
-            dateOfBirth = schoolStubOne.headOfSchool.dateOfBirth.format(DateTimeFormatter.ISO_DATE),
-            shortInfo = schoolStubOne.headOfSchool.shortInfo,
-            photo = schoolStubOne.headOfSchool.photo,
-            hoursOfFly = schoolStubOne.headOfSchool.hoursOfFly,
-            flyLocations = schoolStubOne.headOfSchool.flyLocations,
-            certificateUrl = schoolStubOne.headOfSchool.certificateUrl.toString(),
-            mobilePhone = schoolStubOne.headOfSchool.mobilePhone
-        ),
+        headOfSchool = schoolStubOne.headOfSchool.asString(),
         shortInfo = schoolStubOne.shortInfo,
         location = LocationDTO(
             address = schoolStubOne.location.address,
             geolocation = schoolStubOne.location.geolocation,
             shortInfo = schoolStubOne.location.shortInfo
         ),
-        instructorList = null,
+        instructors = null,
         contactInfo = ContactInfoDTO(
             mobilePhones = schoolStubOne.contactInfo.mobilePhones,
             socialMedia = schoolStubOne.contactInfo.socialMedia,
             email = schoolStubOne.contactInfo.email
         ),
-        serviceBasicInfo = schoolStubOne.serviceBasicInfo,
+        services = null,
         status = SchoolStatusDTO.valueOf(schoolStubOne.status.toString()),
         schoolId = schoolStubOne.id.asString(),
         permissions = schoolStubOne.permissions.map { CommonPermissions.valueOf(it.toString())}.toSet()

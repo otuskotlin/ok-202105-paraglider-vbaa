@@ -4,13 +4,14 @@ import core.ICorExec
 import core.chain
 import ru.kotlin.paraglider.vbaa.be.common.context.CommonOperations
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
-import ru.kotlin.paraglider.vbaa.be.logics.chains.school.stubs.schoolCreateStub
 import ru.kotlin.paraglider.vbaa.be.logics.chains.school.stubs.schoolGetStub
-import ru.kotlin.paraglider.vbaa.be.logics.chains.school.validators.SchoolCreateValidator
 import ru.kotlin.paraglider.vbaa.be.logics.chains.school.validators.SchoolGetValidator
-import ru.kotlin.paraglider.vbaa.be.logics.workers.prepareResponseChain
-import ru.kotlin.paraglider.vbaa.be.logics.workers.chainInitWorker
-import ru.kotlin.paraglider.vbaa.be.logics.workers.checkOperationWorker
+import ru.kotlin.paraglider.vbaa.be.logics.workers.common.prepareResponseChain
+import ru.kotlin.paraglider.vbaa.be.logics.workers.common.chainInitWorker
+import ru.kotlin.paraglider.vbaa.be.logics.workers.common.checkOperationWorker
+import ru.kotlin.paraglider.vbaa.be.logics.workers.common.chooseDb
+import ru.kotlin.paraglider.vbaa.be.logics.workers.repo.school.repoSchoolCreate
+import ru.kotlin.paraglider.vbaa.be.logics.workers.repo.school.repoSchoolRead
 import ru.kotlin.paraglider.vbaa.be.logics.workers.validation
 
 object SchoolGet: ICorExec<SchoolContext> by chain<SchoolContext>({
@@ -20,6 +21,8 @@ object SchoolGet: ICorExec<SchoolContext> by chain<SchoolContext>({
     )
     chainInitWorker(title = "Инициализация чейна")
 
+    chooseDb(title = "Выбираем БД или STUB")
+
     validation(
         title = "validate get school request",
         validator = SchoolGetValidator
@@ -27,7 +30,7 @@ object SchoolGet: ICorExec<SchoolContext> by chain<SchoolContext>({
 
     schoolGetStub(title = "Обработка стабкейса для Get")
 
-    // TODO: продовая логика, работа с БД
+    repoSchoolRead(title = "DB: read school")
 
     prepareResponseChain(title = "Подготовка ответа")
 }).build()

@@ -14,8 +14,8 @@ class CorParallel<T>(
     private val execs: List<ICorExec<T>>,
     override val title: String,
     override val description: String = "",
-    override val blockOn: T.() -> Boolean = { true },
-    override val blockExcept: T.(Throwable) -> Unit = {},
+    override val blockOn: suspend T.() -> Boolean = { true },
+    override val blockExcept: suspend T.(Throwable) -> Unit = {},
 ) : AbstractCor<T>(
     title, description, blockOn, blockExcept
 ) {
@@ -33,8 +33,8 @@ class CorParallelDsl<T>(
     override var title: String = "",
     override var description: String = "",
     private val workers: MutableList<ICorExecDsl<T>> = mutableListOf(),
-    override var blockOn: T.() -> Boolean = { true },
-    override var blockExcept: T.(e: Throwable) -> Unit = { e: Throwable -> throw e }
+    override var blockOn: suspend T.() -> Boolean = { true },
+    override var blockExcept: suspend T.(Throwable) -> Unit = { e: Throwable -> throw e }
 ) : AbstractCorDsl<T>(
     title, description, workers, blockOn, blockExcept
 ) {

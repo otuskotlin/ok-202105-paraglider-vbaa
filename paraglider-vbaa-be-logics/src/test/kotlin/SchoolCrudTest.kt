@@ -38,9 +38,9 @@ class SchoolCrudTest {
             assertEquals(stub.headOfSchool, headOfSchool)
             assertEquals(stub.shortInfo, shortInfo)
             assertEquals(stub.location, location)
-            assertEquals(stub.instructorList, instructorList)
+            assertEquals(stub.instructors, instructors)
             assertEquals(stub.contactInfo, contactInfo)
-            assertEquals(stub.serviceBasicInfo, serviceBasicInfo)
+            assertEquals(stub.services, services)
             assertEquals(stub.status, status)
             assertEquals(stub.permissions, permissions)
         }
@@ -76,7 +76,7 @@ class SchoolCrudTest {
         val stubs = SchoolStub.getModels().map { it.copy() }.toMutableList()
 
         val context = SchoolContext(
-            requestSchoolIds = stubs.map(SchoolModel::id).toMutableSet(),
+            requestSchoolIds = stubs.map(SchoolModel::id).toList(),
             operation = CommonOperations.READ
         ).apply {
             stubCase = CommonStubCase.SUCCESS
@@ -93,9 +93,9 @@ class SchoolCrudTest {
                 assertEquals(expected.headOfSchool, headOfSchool)
                 assertEquals(expected.shortInfo, shortInfo)
                 assertEquals(expected.location, location)
-                assertEquals(expected.instructorList, instructorList)
+                assertEquals(expected.instructors, instructors)
                 assertEquals(expected.contactInfo, contactInfo)
-                assertEquals(expected.serviceBasicInfo, serviceBasicInfo)
+                assertEquals(expected.services, services)
                 assertEquals(expected.status, status)
                 assertEquals(expected.permissions, permissions)
             }
@@ -124,9 +124,9 @@ class SchoolCrudTest {
             assertEquals(expected.headOfSchool, headOfSchool)
             assertEquals(expected.shortInfo, shortInfo)
             assertEquals(expected.location, location)
-            assertEquals(expected.instructorList, instructorList)
+            assertEquals(expected.instructors, instructors)
             assertEquals(expected.contactInfo, contactInfo)
-            assertEquals(expected.serviceBasicInfo, serviceBasicInfo)
+            assertEquals(expected.services, services)
             assertEquals(expected.status, status)
             assertEquals(expected.permissions, permissions)
         }
@@ -139,7 +139,7 @@ class SchoolCrudTest {
         val deleteId = SchoolIdModel("1234")
         val context = SchoolContext(
             operation = CommonOperations.DELETE,
-            requestSchoolIds = setOf(deleteId)
+            requestSchoolIds = listOf(deleteId)
         ).apply {
             stubCase = CommonStubCase.SUCCESS
         }
@@ -155,9 +155,9 @@ class SchoolCrudTest {
             assertEquals(expected.headOfSchool, headOfSchool)
             assertEquals(expected.shortInfo, shortInfo)
             assertEquals(expected.location, location)
-            assertEquals(expected.instructorList, instructorList)
+            assertEquals(expected.instructors, instructors)
             assertEquals(expected.contactInfo, contactInfo)
-            assertEquals(expected.serviceBasicInfo, serviceBasicInfo)
+            assertEquals(expected.services, services)
             assertEquals(expected.status, status)
             assertEquals(expected.permissions, permissions)
         }
@@ -188,9 +188,9 @@ class SchoolCrudTest {
                 assertEquals(expected.headOfSchool, headOfSchool)
                 assertEquals(expected.shortInfo, shortInfo)
                 assertEquals(expected.location, location)
-                assertEquals(expected.instructorList, instructorList)
+                assertEquals(expected.instructors, instructors)
                 assertEquals(expected.contactInfo, contactInfo)
-                assertEquals(expected.serviceBasicInfo, serviceBasicInfo)
+                assertEquals(expected.services, services)
                 assertEquals(expected.status, status)
                 assertEquals(expected.permissions, permissions)
             }

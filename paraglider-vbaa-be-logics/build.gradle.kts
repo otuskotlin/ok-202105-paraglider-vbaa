@@ -11,6 +11,7 @@ dependencies {
 
     implementation(project(":paraglider-vbaa-be-common"))
     implementation(project(":paraglider-vbaa-be-stubs"))
+    implementation(project(":paraglider-vbaa-be-repo-inmemory"))
     implementation(project(":paraglider-vbaa-mp-common-cor"))
 
     testImplementation(kotlin("test"))

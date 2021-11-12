@@ -339,23 +339,26 @@ components:
           description: Welcome-видео школы
           type: string
         headOfSchool:
-          $ref: '#/components/schemas/InstructorDTO'
+          description: id руководителя школы
+          type: string
         shortInfo:
           description: Краткая информация, история школы
           type: string
         location:
           $ref: '#/components/schemas/LocationDTO'
         #          TODO инструкторов сделать отдельным CRUD
-        instructorList:
-          description: Список инструкторов
+        instructors:
+          description: Список id инструкторов
           type: array
+          uniqueItems: true
           items:
-            $ref: '#/components/schemas/InstructorDTO'
+            type: string
         contactInfo:
           $ref: '#/components/schemas/ContactInfoDTO'
-        serviceBasicInfo:
+        services:
           description: Список услуг предоставляемых школой
           type: array
+          uniqueItems: true
           items:
             type: string
         status:
@@ -367,7 +370,7 @@ components:
       enum:
         - active
         - pendingActivation
-      # TODO Trip List one To Many field or aggregate?
+
 
     LocationDTO:
       description: Информация об адресе и метсонахождении

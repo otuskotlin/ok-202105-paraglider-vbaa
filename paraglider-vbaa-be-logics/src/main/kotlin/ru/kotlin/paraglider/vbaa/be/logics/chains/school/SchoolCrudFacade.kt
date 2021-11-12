@@ -1,9 +1,10 @@
 package ru.kotlin.paraglider.vbaa.be.logics.chains.school
 
+import ru.kotlin.paraglider.vbaa.be.common.context.ContextConfig
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.logics.chains.school.operations.*
 
-class SchoolCrudFacade {
+class SchoolCrudFacade(val contextConfig: ContextConfig = ContextConfig()) {
     suspend fun create(context: SchoolContext) {
         SchoolCreate.exec(context.initSettings())
     }
@@ -21,5 +22,7 @@ class SchoolCrudFacade {
     }
 
     // Метод для установки параметров контекста в чейн, параметры передаются в конструкторе класса
-    private fun SchoolContext.initSettings() = apply { }
+    private fun SchoolContext.initSettings() = apply {
+        config = this@SchoolCrudFacade.contextConfig
+    }
 }

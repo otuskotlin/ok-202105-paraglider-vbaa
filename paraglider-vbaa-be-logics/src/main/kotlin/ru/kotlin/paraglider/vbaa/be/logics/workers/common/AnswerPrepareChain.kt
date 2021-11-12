@@ -1,4 +1,4 @@
-package ru.kotlin.paraglider.vbaa.be.logics.workers
+package ru.kotlin.paraglider.vbaa.be.logics.workers.common
 
 import core.ICorChainDsl
 import handlers.chain

@@ -8,7 +8,6 @@ import org.apache.kafka.common.errors.WakeupException
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.openapi.models.BaseMessage
 import java.time.Duration
-import java.time.Instant
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
