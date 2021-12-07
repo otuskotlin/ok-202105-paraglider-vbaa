@@ -2,9 +2,6 @@ package ru.kotlin.paraglider.vbaa.be.stubs
 
 import ru.kotlin.paraglider.vbaa.be.common.models.*
 import ru.kotlin.paraglider.vbaa.openapi.models.*
-import java.net.URL
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 object SchoolStub {
     private val createSchoolRequest = CreateSchoolRequest(
@@ -38,7 +35,7 @@ object SchoolStub {
         id = SchoolIdModel(id = "123"),
         name = "MyNebo",
         welcomeVideoUrl = "someUrl.com",
-        headOfSchool = InstructorIdModel(id = "uuid-456"),
+        headOfSchool = UserIdModel(id = "uuid-456"),
         shortInfo = "Flying school in Moscow area",
         location = LocationModel(
             address = "Moscow area, Voronovo",
@@ -60,7 +57,7 @@ object SchoolStub {
         id = SchoolIdModel(id = "444"),
         name = "Infinity Sky",
         welcomeVideoUrl = "someUrl.com",
-        headOfSchool = InstructorIdModel(id = "uuid-111"),
+        headOfSchool = UserIdModel(id = "uuid-111"),
         shortInfo = "Paragliding school in Moscow",
         location = LocationModel(
             address = "Moscow area, Letovo",
@@ -101,13 +98,13 @@ object SchoolStub {
             geolocation = schoolStubOne.location.geolocation,
             shortInfo = schoolStubOne.location.shortInfo
         ),
-        instructors = null,
+        instructors = emptySet(),
         contactInfo = ContactInfoDTO(
             mobilePhones = schoolStubOne.contactInfo.mobilePhones,
             socialMedia = schoolStubOne.contactInfo.socialMedia,
             email = schoolStubOne.contactInfo.email
         ),
-        services = null,
+        services = emptySet(),
         status = SchoolStatusDTO.valueOf(schoolStubOne.status.toString()),
         schoolId = schoolStubOne.id.asString(),
         permissions = schoolStubOne.permissions.map { CommonPermissions.valueOf(it.toString())}.toSet()

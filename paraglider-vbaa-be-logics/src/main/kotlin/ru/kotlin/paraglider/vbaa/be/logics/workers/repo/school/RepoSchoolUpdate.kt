@@ -13,10 +13,10 @@ internal fun ICorChainDsl<SchoolContext>.repoSchoolUpdate(title: String)= worker
     on { status == CorStatus.RUNNING }
 
     handle {
-        val result = schoolRepo.update(DbSchoolModelRequest(school = requestSchool))
+        val result = schoolRepo.update(DbSchoolModelRequest(school = dbSchoolList[0]))
         val resultValue = result.result
         if (result.isSuccess && resultValue != null) {
-            responseSchool =  resultValue
+            responseSchool = resultValue
         } else {
             result.errors.forEach {
                 addError(it)

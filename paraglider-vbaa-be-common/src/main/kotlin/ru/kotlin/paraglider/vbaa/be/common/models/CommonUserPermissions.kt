@@ -1,0 +1,26 @@
+package ru.kotlin.paraglider.vbaa.be.common.models
+
+enum class CommonUserPermissions {
+    ROOT,
+
+    CREATE_SCHOOL,
+
+    READ_SCHOOL_OWN,
+    READ_SCHOOL_PUBLIC,
+    READ_TRIP,
+    READ_SERVICE,
+
+    UPDATE_SCHOOL_OWN,
+    UPDATE_SCHOOL_PUBLIC,
+    UPDATE_TRIP,
+    UPDATE_SERVICE,
+
+    DELETE_SCHOOL_OWN,
+    DELETE_SCHOOL_PUBLIC,
+    DELETE_TRIP,
+    DELETE_SERVICE,
+
+    SEARCH_SCHOOL_OWN,
+    SEARCH_SCHOOL_PUBLIC,
+
+}

@@ -76,12 +76,12 @@ private fun IError.toTransport() = RequestError(
 private fun SchoolModel.toTransport() = ResponseSchool(
     name = name.takeIf { it.isNotBlank() },
     welcomeVideoUrl = welcomeVideoUrl.takeIf { it.isNotBlank() },
-    headOfSchool = headOfSchool.takeIf { it != InstructorIdModel.NONE }?.asString(),
+    headOfSchool = headOfSchool.takeIf { it != UserIdModel.NONE }?.asString(),
     shortInfo = shortInfo.takeIf { it.isNotBlank() },
     location = location.takeIf { it != LocationModel() }?.toTransport(),
-    instructors = instructors.takeIf { it.isNotEmpty() }?.map { it.asString() }?.toMutableSet(),
+    instructors = instructors.map { it.asString() }?.toMutableSet(),
     contactInfo = contactInfo.takeIf { it != ContactInfoModel() }?.toTransport(),
-    services = services.takeIf { it.isNotEmpty() }?.map { it.asString() }?.toMutableSet(),
+    services = services.map { it.asString() }?.toMutableSet(),
     status = status.takeIf { it != SchoolStatusModel.NONE }?.let { SchoolStatusDTO.valueOf(it.name) },
     schoolId = id.takeIf { it != SchoolIdModel.NONE }?.asString(),
     permissions = permissions.takeIf { it.isNotEmpty() }?.filter { it != PermissionModel.NONE }

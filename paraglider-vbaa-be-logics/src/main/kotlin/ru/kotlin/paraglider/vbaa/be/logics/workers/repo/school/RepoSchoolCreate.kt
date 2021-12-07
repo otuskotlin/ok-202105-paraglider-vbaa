@@ -13,7 +13,7 @@ internal fun ICorChainDsl<SchoolContext>.repoSchoolCreate(title: String)= worker
     on { status == CorStatus.RUNNING }
 
     handle {
-        val result = schoolRepo.create(DbSchoolModelRequest(school = requestSchool))
+        val result = schoolRepo.create(DbSchoolModelRequest(school = dbSchoolList[0]))
         val resultValue = result.result
         if (result.isSuccess && resultValue != null) {
             responseSchool =  resultValue

@@ -8,10 +8,11 @@ data class SchoolModel(
     var location: LocationModel = LocationModel(),
     var contactInfo: ContactInfoModel = ContactInfoModel(),
 
-    var headOfSchool: InstructorIdModel = InstructorIdModel.NONE,
-    var instructors: Set<InstructorIdModel> = mutableSetOf(),
+    var headOfSchool: UserIdModel = UserIdModel.NONE,
+    var instructors: Set<UserIdModel> = mutableSetOf(),
     var services: Set<ServiceIdModel> = mutableSetOf(),
 
     var status: SchoolStatusModel = SchoolStatusModel.NONE,
+    var principalRelations: Set<CommonPrincipalRelations> = emptySet(),
     var permissions: MutableSet<PermissionModel> = mutableSetOf(),
 )

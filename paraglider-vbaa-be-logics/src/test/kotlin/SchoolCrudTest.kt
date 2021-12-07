@@ -20,6 +20,7 @@ class SchoolCrudTest {
         val stub = SchoolStub.getModel()
 
         val context = SchoolContext(
+            workMode = WorkMode.TEST,
             requestSchool = stub.copy().apply {
                 id = SchoolIdModel.NONE
             },
@@ -52,6 +53,7 @@ class SchoolCrudTest {
         val stub = SchoolStub.getModel()
 
         val context = SchoolContext(
+            workMode = WorkMode.STUB,
             requestSchool = stub.copy().apply {
                 id = SchoolIdModel.NONE
                 contactInfo = ContactInfoModel(
@@ -59,7 +61,8 @@ class SchoolCrudTest {
                 )
                 welcomeVideoUrl = "invalidUrl"
             },
-            operation = CommonOperations.CREATE
+            operation = CommonOperations.CREATE,
+            principal = principalUser()
         ).apply {
             stubCase = CommonStubCase.SUCCESS
         }
@@ -76,6 +79,7 @@ class SchoolCrudTest {
         val stubs = SchoolStub.getModels().map { it.copy() }.toMutableList()
 
         val context = SchoolContext(
+            workMode = WorkMode.TEST,
             requestSchoolIds = stubs.map(SchoolModel::id).toList(),
             operation = CommonOperations.READ
         ).apply {
@@ -107,6 +111,7 @@ class SchoolCrudTest {
     fun updateSuccessTest() {
         val crud = SchoolCrudFacade()
         val context = SchoolContext(
+            workMode = WorkMode.TEST,
             requestSchool = SchoolStub.getModel().copy(),
             operation = CommonOperations.UPDATE
         ).apply {
@@ -138,6 +143,7 @@ class SchoolCrudTest {
         val crud = SchoolCrudFacade()
         val deleteId = SchoolIdModel("1234")
         val context = SchoolContext(
+            workMode = WorkMode.TEST,
             operation = CommonOperations.DELETE,
             requestSchoolIds = listOf(deleteId)
         ).apply {
@@ -167,6 +173,7 @@ class SchoolCrudTest {
     fun searchSuccessTest() {
         val crud = SchoolCrudFacade()
         val context = SchoolContext(
+            workMode = WorkMode.TEST,
             requestPage = PaginatedModel(
                 lastId = SchoolIdModel("123"),
                 size = 10

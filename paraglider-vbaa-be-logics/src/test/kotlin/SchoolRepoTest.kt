@@ -13,13 +13,15 @@ import kotlin.test.assertTrue
 class SchoolRepoTest {
 
     @Test
-    fun createSuccessTest() {
-        val repo = RepoSchoolInMemory()
+    fun createSuccessTest_With_ValidUser_SchoolHead() {
+        val repo = RepoSchoolInMemory(
+            initObjects = SchoolStub.getModels().map { it.copy() }.toMutableList()
+        )
         val crud = SchoolCrudFacade(contextConfig = ContextConfig(
             repoTest = repo
         ))
         val stub = SchoolStub.getModel().apply {
-            headOfSchool = InstructorIdModel(id = "uuid-456")
+            headOfSchool = UserIdModel(id = "uuid-456")
         }
 
         val context = SchoolContext(
@@ -27,7 +29,8 @@ class SchoolRepoTest {
             requestSchool = stub.copy().apply {
                 id = SchoolIdModel.NONE
             },
-            operation = CommonOperations.CREATE
+            operation = CommonOperations.CREATE,
+            principal = principalSchoolHead()
         )
         runBlocking {
             crud.create(context)
@@ -46,6 +49,34 @@ class SchoolRepoTest {
             assertEquals(stub.status, status)
         }
     }
+    @Test
+    fun createFailedTest_With_Lack_Of_Permissions() {
+        val repo = RepoSchoolInMemory(
+            initObjects = SchoolStub.getModels().map { it.copy() }.toMutableList()
+        )
+        val crud = SchoolCrudFacade(
+            contextConfig = ContextConfig(
+                repoTest = repo
+            )
+        )
+        val stub = SchoolStub.getModel().apply {
+            headOfSchool = UserIdModel(id = "uuid-456")
+        }
+
+        val context = SchoolContext(
+            workMode = WorkMode.TEST,
+            requestSchool = stub.copy().apply {
+                id = SchoolIdModel.NONE
+            },
+            operation = CommonOperations.CREATE,
+            principal = principalUser()
+        )
+        runBlocking {
+            crud.create(context)
+        }
+        assertEquals(CorStatus.ERROR, context.status)
+        assertEquals(1, context.errors.size)
+    }
 
     @Test
     fun readSuccessTest() {
@@ -60,7 +91,8 @@ class SchoolRepoTest {
         val context = SchoolContext(
             workMode = WorkMode.TEST,
             requestSchoolIds = stubs.map(SchoolModel::id).toList(),
-            operation = CommonOperations.READ
+            operation = CommonOperations.READ,
+            principal = principalUser()
         )
         runBlocking {
             crud.get(context)
@@ -88,7 +120,7 @@ class SchoolRepoTest {
     @Test
     fun updateSuccessTest() {
         val repo = RepoSchoolInMemory(
-            initObjects = listOf(SchoolStub.getModel())
+            initObjects = SchoolStub.getModels().map { it.copy() }.toMutableList()
         )
         val crud = SchoolCrudFacade(contextConfig = ContextConfig(
             repoTest = repo
@@ -96,7 +128,8 @@ class SchoolRepoTest {
         val context = SchoolContext(
             workMode = WorkMode.TEST,
             requestSchool = SchoolStub.getModel().copy(),
-            operation = CommonOperations.UPDATE
+            operation = CommonOperations.UPDATE,
+            principal = principalSchoolHead()
         )
         runBlocking {
             crud.update(context)
@@ -120,19 +153,20 @@ class SchoolRepoTest {
 
     @Test
     fun deleteSuccessTest() {
-        val repo = RepoSchoolInMemory()
+        val repo = RepoSchoolInMemory(
+            initObjects = SchoolStub.getModels().map { it.copy() }.toMutableList()
+        )
         val crud = SchoolCrudFacade(contextConfig = ContextConfig(
             repoTest = repo
         ))
 
-        val deleteId = SchoolIdModel("1234")
+        val deleteId = SchoolIdModel("123")
         val context = SchoolContext(
             workMode = WorkMode.TEST,
             operation = CommonOperations.DELETE,
-            requestSchoolIds = listOf(deleteId)
-        ).apply {
-            stubCase = CommonStubCase.SUCCESS
-        }
+            requestSchoolIds = listOf(deleteId),
+            principal = principalSchoolHead()
+        )
         runBlocking {
             crud.delete(context)
         }
@@ -155,7 +189,9 @@ class SchoolRepoTest {
 
     @Test
     fun searchSuccessTest() {
-        val repo = RepoSchoolInMemory()
+        val repo = RepoSchoolInMemory(
+            initObjects = SchoolStub.getModels().map { it.copy() }.toMutableList()
+        )
         val crud = SchoolCrudFacade(contextConfig = ContextConfig(
             repoTest = repo
         ))
@@ -165,10 +201,9 @@ class SchoolRepoTest {
                 lastId = SchoolIdModel("123"),
                 size = 10
             ),
-            operation = CommonOperations.SEARCH
-        ).apply {
-            stubCase = CommonStubCase.SUCCESS
-        }
+            operation = CommonOperations.SEARCH,
+            principal = principalUser()
+        )
         runBlocking {
             crud.search(context)
         }

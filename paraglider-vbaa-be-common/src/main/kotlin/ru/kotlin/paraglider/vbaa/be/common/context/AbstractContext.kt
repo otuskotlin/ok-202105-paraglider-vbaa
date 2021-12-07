@@ -6,6 +6,8 @@ import java.time.Instant
 
 abstract class AbstractContext(
     open var operation: CommonOperations = CommonOperations.NONE,
+    open var principal: CommonPrincipalModel = CommonPrincipalModel.NONE,
+    open val chainPermissions: MutableSet<CommonUserPermissions> = mutableSetOf(),
     open var onRequest: String = "",
     open var config: ContextConfig = ContextConfig(),
     open val startTime: Instant = Instant.now(),

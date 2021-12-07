@@ -4,6 +4,7 @@ import core.ICorChainDsl
 import handlers.worker
 import ru.kotlin.paraglider.vbaa.be.common.context.CorStatus
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
+import ru.kotlin.paraglider.vbaa.be.repo.common.DbSchoolFilterRequest
 import ru.kotlin.paraglider.vbaa.be.repo.common.DbSchoolModelRequest
 
 internal fun ICorChainDsl<SchoolContext>.repoSchoolSearch(title: String)= worker {
@@ -13,7 +14,7 @@ internal fun ICorChainDsl<SchoolContext>.repoSchoolSearch(title: String)= worker
     on { status == CorStatus.RUNNING }
 
     handle {
-        val result = schoolRepo.search(requestFilter)
+        val result = schoolRepo.search(DbSchoolFilterRequest.of(dbFilter))
         if (result.isSuccess) {
             responseSchoolList = result.result.toMutableList()
         } else {

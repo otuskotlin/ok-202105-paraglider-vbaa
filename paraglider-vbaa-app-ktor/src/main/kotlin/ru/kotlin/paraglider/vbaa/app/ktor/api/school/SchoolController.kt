@@ -1,14 +1,19 @@
 package ru.kotlin.paraglider.vbaa.app.ktor.api.school
 
 import SchoolService
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
+import ru.kotlin.paraglider.vbaa.app.ktor.mappers.toModel
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.openapi.models.*
 
 class SchoolController(private val schoolService: SchoolService) {
-    suspend fun createSchool(request: CreateSchoolRequest): CreateSchoolResponse {
-        val context = SchoolContext()
+    suspend fun createSchool(request: CreateSchoolRequest, principal: JWTPrincipal?): CreateSchoolResponse {
+        val context = SchoolContext(
+            principal = principal.toModel()
+        )
         return try {
             schoolService.createSchool(context, request)
         } catch (e: Throwable) {
@@ -18,8 +23,10 @@ class SchoolController(private val schoolService: SchoolService) {
         } as CreateSchoolResponse
     }
 
-    suspend fun updateSchool(request: UpdateSchoolRequest): UpdateSchoolResponse {
-        val context = SchoolContext()
+    suspend fun updateSchool(request: UpdateSchoolRequest, principal: JWTPrincipal?): UpdateSchoolResponse {
+        val context = SchoolContext(
+            principal = principal.toModel()
+        )
         return try {
             schoolService.updateSchool(context, request)
         } catch (e: Throwable) {
@@ -29,8 +36,10 @@ class SchoolController(private val schoolService: SchoolService) {
         } as UpdateSchoolResponse
     }
 
-    suspend fun getSchoolList(request: GetSchoolRequest): GetSchoolResponse {
-        val context = SchoolContext()
+    suspend fun getSchoolList(request: GetSchoolRequest, principal: JWTPrincipal?): GetSchoolResponse {
+        val context = SchoolContext(
+            principal = principal.toModel()
+        )
         return try {
             schoolService.getSchoolList(context, request)
         } catch (e: Throwable) {
@@ -40,8 +49,10 @@ class SchoolController(private val schoolService: SchoolService) {
         } as GetSchoolResponse
     }
 
-    suspend fun searchSchools(request: SearchSchoolRequest): SearchSchoolResponse {
-        val context = SchoolContext()
+    suspend fun searchSchools(request: SearchSchoolRequest, principal: JWTPrincipal?): SearchSchoolResponse {
+        val context = SchoolContext(
+            principal = principal.toModel()
+        )
         return try {
             schoolService.searchSchools(context, request)
         } catch (e: Throwable) {
@@ -51,8 +62,10 @@ class SchoolController(private val schoolService: SchoolService) {
         } as SearchSchoolResponse
     }
 
-    suspend fun deleteSchool(request: DeleteSchoolRequest): DeleteSchoolResponse {
-        val context = SchoolContext()
+    suspend fun deleteSchool(request: DeleteSchoolRequest, principal: JWTPrincipal?): DeleteSchoolResponse {
+        val context = SchoolContext(
+            principal = principal.toModel()
+        )
         return try {
             schoolService.deleteSchool(context, request)
         } catch (e: Throwable) {
@@ -62,8 +75,10 @@ class SchoolController(private val schoolService: SchoolService) {
         } as DeleteSchoolResponse
     }
 
-    suspend fun initSchool(request: InitSchoolRequest): InitSchoolResponse {
-        val context = SchoolContext()
+    suspend fun initSchool(request: InitSchoolRequest, principal: JWTPrincipal?): InitSchoolResponse {
+        val context = SchoolContext(
+            principal = principal.toModel()
+        )
         return try {
             schoolService.initSchool(context, request)
         } catch (e: Throwable) {

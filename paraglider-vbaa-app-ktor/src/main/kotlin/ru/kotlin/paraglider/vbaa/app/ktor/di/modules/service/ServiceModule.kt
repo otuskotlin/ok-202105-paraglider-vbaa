@@ -14,6 +14,7 @@ fun DI.MainBuilder.serviceModule() {
     bind<SchoolService>() with singleton { SchoolService(instance()) }
     bind<SchoolCrudFacade>() with singleton { SchoolCrudFacade(instance()) }
     bind<ContextConfig>() with singleton { ContextConfig(
+        //TODO change PROD repo
         repoProd = RepoSchoolInMemory(initObjects = listOf()),
         repoTest = RepoSchoolInMemory(initObjects = listOf(), ttl = Duration.ofHours(1))
     ) }
