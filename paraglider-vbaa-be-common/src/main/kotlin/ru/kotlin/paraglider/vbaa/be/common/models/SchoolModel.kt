@@ -13,6 +13,6 @@ data class SchoolModel(
     var services: Set<ServiceIdModel> = mutableSetOf(),
 
     var status: SchoolStatusModel = SchoolStatusModel.NONE,
-    var principalRelations: Set<CommonPrincipalRelations> = emptySet(),
+    var principalRelations: Set<SchoolPrincipalRelations> = emptySet(),
     var permissions: MutableSet<PermissionModel> = mutableSetOf(),
 )

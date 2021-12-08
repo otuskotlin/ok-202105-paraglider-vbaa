@@ -1,14 +1,14 @@
 package ru.kotlin.paraglider.vbaa.be.logics.chains.helper
 
-import ru.kotlin.paraglider.vbaa.be.common.models.CommonPrincipalModel
-import ru.kotlin.paraglider.vbaa.be.common.models.CommonPrincipalRelations
-import ru.kotlin.paraglider.vbaa.be.common.models.SchoolModel
-import ru.kotlin.paraglider.vbaa.be.common.models.SchoolStatusModel
+import ru.kotlin.paraglider.vbaa.be.common.models.*
 
-fun SchoolModel.resolveRelationsTo(principal: CommonPrincipalModel): Set<CommonPrincipalRelations> = listOf(
-    CommonPrincipalRelations.NONE,
-    CommonPrincipalRelations.OWN.takeIf { principal.id == headOfSchool || instructors.contains(principal.id)},
-    CommonPrincipalRelations.PUBLIC,
-    //TODO понять какое условие необходимо для перехода в это отношение
-    CommonPrincipalRelations.MODERATABLE.takeIf { status == SchoolStatusModel.ACTIVE },
+fun SchoolModel.resolveRelationsTo(principal: CommonPrincipalModel): Set<SchoolPrincipalRelations> = listOf(
+    SchoolPrincipalRelations.NONE,
+    //all are users
+    SchoolPrincipalRelations.USER,
+    //TO-BE implemeted student list
+//    SchoolPrincipalRelations.STUDENT,
+    SchoolPrincipalRelations.INSTRUCTOR.takeIf { instructors.contains(principal.id) },
+    SchoolPrincipalRelations.HEAD.takeIf { principal.id == headOfSchool },
+    SchoolPrincipalRelations.APP_MODERATOR.takeIf { principal.groups.contains(CommonUserGroups.APP_MODERATOR) }
 ).filterNotNull().toSet()

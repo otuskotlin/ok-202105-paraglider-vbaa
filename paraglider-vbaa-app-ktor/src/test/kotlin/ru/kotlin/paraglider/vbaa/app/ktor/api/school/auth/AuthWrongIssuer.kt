@@ -3,6 +3,7 @@ package ru.kotlin.paraglider.vbaa.app.ktor.api.school.auth
 import io.ktor.http.*
 import org.junit.Test
 import ru.kotlin.paraglider.vbaa.app.ktor.api.school.RouterTest
+import ru.kotlin.paraglider.vbaa.app.ktor.config.AppKtorConfig
 import ru.kotlin.paraglider.vbaa.app.ktor.config.KtorAuthConfig
 import ru.kotlin.paraglider.vbaa.be.stubs.SchoolStub
 import ru.kotlin.paraglider.vbaa.openapi.models.BaseDebugRequest
@@ -20,7 +21,9 @@ internal class AuthWrongIssuer : RouterTest() {
         testPostRequest<GetSchoolResponse>(
             body=data,
             uri="/api/v1/school/list",
-            auth = KtorAuthConfig.TEST.copy()
+            config = AppKtorConfig(
+                auth = KtorAuthConfig.TEST.copy()
+            )
         ) {
             assertEquals(GetSchoolResponse.Result.SUCCESS, result)
             assertNull(errors)
@@ -34,8 +37,10 @@ internal class AuthWrongIssuer : RouterTest() {
         testPostRequest<GetSchoolResponse>(
             body=data,
             uri="/api/v1/school/list",
-            auth = KtorAuthConfig.TEST.copy(
-                    issuer = "some other company"
+            config = AppKtorConfig(
+                auth = KtorAuthConfig.TEST.copy(
+                    issuer = "some fake company"
+                )
             ),
             result = HttpStatusCode.Unauthorized
         )
@@ -47,8 +52,10 @@ internal class AuthWrongIssuer : RouterTest() {
         testPostRequest<GetSchoolResponse>(
             body=data,
             uri="/api/v1/school/list",
-            auth = KtorAuthConfig.TEST.copy(
+            config = AppKtorConfig(
+                auth = KtorAuthConfig.TEST.copy(
                     secret = "wrong secret"
+                )
             ),
             result = HttpStatusCode.Unauthorized
         )

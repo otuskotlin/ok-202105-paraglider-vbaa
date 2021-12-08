@@ -7,7 +7,7 @@ import ru.kotlin.paraglider.vbaa.be.common.context.CommonOperations
 import ru.kotlin.paraglider.vbaa.be.common.context.CorStatus
 import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.models.CommonSearchTypes
-import ru.kotlin.paraglider.vbaa.be.common.models.CommonUserPermissions
+import ru.kotlin.paraglider.vbaa.be.common.models.SchoolUserPermissions
 import ru.kotlin.paraglider.vbaa.be.logics.chains.school.stubs.schoolSearchStub
 import ru.kotlin.paraglider.vbaa.be.logics.chains.school.validators.SchoolSearchValidator
 import ru.kotlin.paraglider.vbaa.be.logics.workers.common.*
@@ -41,8 +41,8 @@ object SchoolSearch: ICorExec<SchoolContext> by chain<SchoolContext>({
             description = title
             handle {
                 dbFilter.searchTypes = listOf(
-                    CommonSearchTypes.OWN.takeIf { chainPermissions.contains(CommonUserPermissions.SEARCH_SCHOOL_OWN) },
-                    CommonSearchTypes.PUBLIC.takeIf { chainPermissions.contains(CommonUserPermissions.SEARCH_SCHOOL_PUBLIC) },
+                    CommonSearchTypes.OWN.takeIf { chainPermissions.contains(SchoolUserPermissions.SEARCH_SCHOOL_OWN) },
+                    CommonSearchTypes.PUBLIC.takeIf { chainPermissions.contains(SchoolUserPermissions.SEARCH_SCHOOL_PUBLIC) },
                 ).filterNotNull().toMutableSet()
             }
         }

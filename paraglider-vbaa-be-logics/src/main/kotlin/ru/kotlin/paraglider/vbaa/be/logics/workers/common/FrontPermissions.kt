@@ -100,7 +100,7 @@ fun ICorChainDsl<SchoolContext>.frontPermissions(title: String) = chain {
         }
     }
     worker {
-        this.title = "Разрешения для инструкторов и персонала школы"
+        this.title = "Разрешения для инструкторов школы"
         description = this.title
         on{ responseSchool.instructors.contains(principal.id) }
         handle {

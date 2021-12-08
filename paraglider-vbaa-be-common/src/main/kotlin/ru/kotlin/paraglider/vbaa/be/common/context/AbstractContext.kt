@@ -1,13 +1,12 @@
 package ru.kotlin.paraglider.vbaa.be.common.context
 
 import ru.kotlin.paraglider.vbaa.be.common.models.*
-import ru.kotlin.paraglider.vbaa.be.repo.common.IRepo
 import java.time.Instant
 
 abstract class AbstractContext(
     open var operation: CommonOperations = CommonOperations.NONE,
     open var principal: CommonPrincipalModel = CommonPrincipalModel.NONE,
-    open val chainPermissions: MutableSet<CommonUserPermissions> = mutableSetOf(),
+    open val chainPermissions: MutableSet<SchoolUserPermissions> = mutableSetOf(),
     open var onRequest: String = "",
     open var config: ContextConfig = ContextConfig(),
     open val startTime: Instant = Instant.now(),

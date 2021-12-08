@@ -5,7 +5,7 @@ import handlers.worker
 import ru.kotlin.paraglider.vbaa.be.common.context.AbstractContext
 import ru.kotlin.paraglider.vbaa.be.common.context.CorStatus
 import ru.kotlin.paraglider.vbaa.be.common.models.CommonUserGroups
-import ru.kotlin.paraglider.vbaa.be.common.models.CommonUserPermissions
+import ru.kotlin.paraglider.vbaa.be.common.models.SchoolUserPermissions
 
 fun ICorChainDsl<out AbstractContext>.chainPermissions(title: String) = worker {
     this.title = title
@@ -16,32 +16,45 @@ fun ICorChainDsl<out AbstractContext>.chainPermissions(title: String) = worker {
     }
 
     handle {
-        val permAdd: Set<CommonUserPermissions> = principal.groups.map {
+        val permAdd: Set<SchoolUserPermissions> = principal.groups.map {
             when(it) {
                 CommonUserGroups.USER -> setOf(
-                    CommonUserPermissions.READ_SCHOOL_PUBLIC,
+                    SchoolUserPermissions.READ_SCHOOL_PUBLIC,
                 )
-                CommonUserGroups.STUDENT -> setOf()
+                CommonUserGroups.STUDENT -> setOf(
+                    SchoolUserPermissions.READ_SCHOOL_PUBLIC,
+                    SchoolUserPermissions.READ_SCHOOL_OWN,
+                )
                 CommonUserGroups.PILOT -> setOf()
                 CommonUserGroups.SCHOOL_HEAD -> setOf(
-                    CommonUserPermissions.READ_SCHOOL_PUBLIC,
-                    CommonUserPermissions.READ_SCHOOL_OWN,
-                    CommonUserPermissions.CREATE_SCHOOL,
-                    CommonUserPermissions.UPDATE_SCHOOL_OWN,
-                    CommonUserPermissions.DELETE_SCHOOL_OWN,
+                    SchoolUserPermissions.READ_SCHOOL_PUBLIC,
+                    SchoolUserPermissions.READ_SCHOOL_OWN,
+                    SchoolUserPermissions.CREATE_SCHOOL,
+                    SchoolUserPermissions.UPDATE_SCHOOL,
+                    SchoolUserPermissions.DELETE_SCHOOL,
                 )
-                CommonUserGroups.INSTRUCTOR -> setOf()
-                CommonUserGroups.SCHOOL_STUFF -> setOf(
-                    CommonUserPermissions.READ_SCHOOL_PUBLIC,
+                CommonUserGroups.INSTRUCTOR -> setOf(
+                    SchoolUserPermissions.READ_SCHOOL_PUBLIC,
+                    SchoolUserPermissions.READ_SCHOOL_OWN,
+                    SchoolUserPermissions.UPDATE_SCHOOL,
                 )
+                CommonUserGroups.SCHOOL_STUFF -> setOf()
                 CommonUserGroups.APP_MODERATOR -> setOf(
-                    CommonUserPermissions.ROOT
+                    SchoolUserPermissions.READ_SCHOOL_PUBLIC,
+                    SchoolUserPermissions.READ_SCHOOL_OWN,
+                    SchoolUserPermissions.CREATE_SCHOOL,
+                    SchoolUserPermissions.UPDATE_SCHOOL,
+                    SchoolUserPermissions.DELETE_SCHOOL,
                 )
-                CommonUserGroups.TEST -> setOf()
-                CommonUserGroups.BLOCKED_USER -> setOf()
+                CommonUserGroups.TEST -> setOf(
+                    SchoolUserPermissions.READ_SCHOOL_PUBLIC,
+                )
+                CommonUserGroups.BLOCKED_USER -> setOf(
+                    SchoolUserPermissions.READ_SCHOOL_PUBLIC,
+                )
             }
         }.flatten().toSet()
-        val permDel: Set<CommonUserPermissions> = principal.groups.map {
+        val permDel: Set<SchoolUserPermissions> = principal.groups.map {
             when(it) {
                 CommonUserGroups.USER -> setOf()
                 CommonUserGroups.STUDENT -> setOf()
@@ -52,7 +65,7 @@ fun ICorChainDsl<out AbstractContext>.chainPermissions(title: String) = worker {
                 CommonUserGroups.APP_MODERATOR -> setOf()
                 CommonUserGroups.TEST -> setOf()
                 CommonUserGroups.BLOCKED_USER -> setOf(
-                    CommonUserPermissions.READ_SCHOOL_PUBLIC,
+                    SchoolUserPermissions.READ_SCHOOL_PUBLIC,
                 )
             }
         }.flatten().toSet()
