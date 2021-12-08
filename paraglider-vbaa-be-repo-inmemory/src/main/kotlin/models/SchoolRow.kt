@@ -23,8 +23,8 @@ data class SchoolRow(
         shortInfo = internal.shortInfo.takeIf { it.isNotBlank() },
         location = LocationRow(internal.location),
         contactInfo = ContactInfoRow(internal.contactInfo),
-        headOfSchool = internal.headOfSchool.takeIf { it != InstructorIdModel.NONE }?.asString(),
-        instructors = internal.instructors.takeIf { it.isNotEmpty() }?.map { it.asString() }?.toMutableSet(),
+        headOfSchool = internal.headOfSchool.takeIf { it != UserIdModel.NONE }?.asString(),
+        instructors = internal.instructors.map { it.asString() }?.toMutableSet(),
         services = internal.services.map{ it.asString() }.toMutableSet(),
         status = internal.status.toString(),
     )
@@ -35,8 +35,8 @@ data class SchoolRow(
         shortInfo = shortInfo ?: "",
         location = location?.toInternal() ?: LocationModel(),
         contactInfo = contactInfo?.toInternal() ?: ContactInfoModel(),
-        headOfSchool = headOfSchool?.let { InstructorIdModel(it) } ?: InstructorIdModel.NONE,
-        instructors = instructors.orEmpty().map { InstructorIdModel(it) }.toMutableSet(),
+        headOfSchool = headOfSchool?.let { UserIdModel(it) } ?: UserIdModel.NONE,
+        instructors = instructors.orEmpty().map { UserIdModel(it) }.toMutableSet(),
         services = services.orEmpty().map { ServiceIdModel(it) }.toMutableSet(),
         status = status?.let { SchoolStatusModel.valueOf(it) } ?: SchoolStatusModel.NONE,
     )

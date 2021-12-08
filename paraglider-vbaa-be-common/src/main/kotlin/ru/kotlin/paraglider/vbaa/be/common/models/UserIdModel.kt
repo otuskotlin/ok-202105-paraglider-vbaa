@@ -3,11 +3,11 @@ package ru.kotlin.paraglider.vbaa.be.common.models
 import java.util.*
 
 @JvmInline
-value class InstructorIdModel(val id: String) {
+value class UserIdModel(val id: String) {
     constructor(id: UUID) : this(id.toString())
 
     companion object {
-        val NONE = InstructorIdModel("")
+        val NONE = UserIdModel("")
     }
 
     fun asString() = id

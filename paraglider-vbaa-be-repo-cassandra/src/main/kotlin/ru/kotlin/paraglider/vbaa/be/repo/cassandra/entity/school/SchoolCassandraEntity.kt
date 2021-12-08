@@ -61,9 +61,9 @@ data class SchoolCassandraEntity(
         mobilePhones = schoolModel.contactInfo.mobilePhones.takeIf { it.isNotEmpty() },
         socialMedia = schoolModel.contactInfo.socialMedia.takeIf { it.isNotEmpty() },
         email = schoolModel.contactInfo.email.takeIf { it.isNotBlank() },
-        headOfSchool = schoolModel.headOfSchool.takeIf { it != InstructorIdModel.NONE }?.asString(),
-        instructors = schoolModel.instructors.takeIf { it.isNotEmpty() }?.map { it.asString() }?.toMutableSet(),
-        services = schoolModel.services.takeIf { it.isNotEmpty() }?.map { it.asString() }?.toMutableSet(),
+        headOfSchool = schoolModel.headOfSchool.takeIf { it != UserIdModel.NONE }?.asString(),
+        instructors = schoolModel.instructors.map { it.asString() }.toMutableSet(),
+        services = schoolModel.services.map { it.asString() }.toMutableSet(),
         status = schoolModel.status.takeIf{ it != SchoolStatusModel.NONE }?.let { SchoolStatusEntity.valueOf(it.name) },
         permissions = schoolModel.permissions.takeIf { it.isNotEmpty() }?.map { PermissionEntity.valueOf(it.name) }?.toMutableSet()
     )
@@ -82,8 +82,8 @@ data class SchoolCassandraEntity(
             socialMedia = socialMedia.orEmpty().toMutableList(),
             email = email ?: ""
         ),
-        headOfSchool = headOfSchool?.let { InstructorIdModel(it) } ?: InstructorIdModel.NONE,
-        instructors = instructors.orEmpty().map { InstructorIdModel(it) }.toMutableSet(),
+        headOfSchool = headOfSchool?.let { UserIdModel(it) } ?: UserIdModel.NONE,
+        instructors = instructors.orEmpty().map { UserIdModel(it) }.toMutableSet(),
         services = services.orEmpty().map { ServiceIdModel(it) }.toMutableSet(),
         status = status?.let { SchoolStatusModel.valueOf(it.name) } ?: SchoolStatusModel.NONE,
         permissions = permissions.orEmpty().map { PermissionModel.valueOf(it.name) }.toMutableSet()

@@ -13,7 +13,7 @@ internal fun ICorChainDsl<SchoolContext>.repoSchoolDelete(title: String)= worker
     on { status == CorStatus.RUNNING }
 
     handle {
-        val result = schoolRepo.delete(DbSchoolIdRequest(id = requestSchoolIds.elementAt(0)))
+        val result = schoolRepo.delete(DbSchoolIdRequest(id = dbSchoolList[0].id))
         val resultValue = result.result
         if (result.isSuccess && resultValue != null) {
             responseSchool =  resultValue

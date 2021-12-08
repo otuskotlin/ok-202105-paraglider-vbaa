@@ -29,11 +29,17 @@ application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
+fun DependencyHandler.ktor(module: String, version: String? = ktorVersion): Any =
+    "io.ktor:ktor-$module:$version"
+
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-jackson:$ktorVersion")
+    implementation(ktor("server-core")) // "io.ktor:ktor-server-core:$ktorVersion"
+    implementation(ktor("server-netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
+    implementation(ktor("jackson"))
+
+    implementation(ktor("auth"))
+    implementation(ktor("auth-jwt"))
 
     implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodeinDiVersion")
 
@@ -47,6 +53,7 @@ dependencies {
     implementation(project(":paraglider-vbaa-be-service-openapi"))
     implementation(project(":paraglider-vbaa-be-stubs"))
     implementation(project(":paraglider-vbaa-be-repo-inmemory"))
+    implementation(project(":paraglider-vbaa-be-repo-cassandra"))
     implementation(project(":paraglider-vbaa-be-repo-test"))
     implementation(project(":paraglider-vbaa-transport-openapi"))
     implementation(project(":paraglider-vbaa-transport-mapping-openapi"))

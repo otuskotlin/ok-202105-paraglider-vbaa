@@ -38,7 +38,7 @@ abstract class RepoSchoolCreateTest {
                 socialMedia = listOf("create object socialMedia 1"),
                 email = "create object email"
             ),
-            headOfSchool = InstructorIdModel("uuid-123"),
+            headOfSchool = UserIdModel("uuid-123"),
             instructors = emptySet(),
             services = emptySet(),
             status = SchoolStatusModel.ACTIVE

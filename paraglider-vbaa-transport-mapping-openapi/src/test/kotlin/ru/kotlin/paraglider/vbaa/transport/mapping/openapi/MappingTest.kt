@@ -51,7 +51,7 @@ class MappingTest {
                 id = SchoolIdModel("1"),
                 name = "My Sky",
                 welcomeVideoUrl = "https://www.youtube.com/watch?v=HxbexLNDxZI",
-                headOfSchool = InstructorIdModel("321"),
+                headOfSchool = UserIdModel("321"),
                 shortInfo = "paragliding school",
                 location = LocationModel(
                     address = "Moscow, Podolsk",

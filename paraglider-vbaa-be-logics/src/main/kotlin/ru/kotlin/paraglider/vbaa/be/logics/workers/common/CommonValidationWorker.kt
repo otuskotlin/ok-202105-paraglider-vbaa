@@ -1,4 +1,4 @@
-package ru.kotlin.paraglider.vbaa.be.logics.workers
+package ru.kotlin.paraglider.vbaa.be.logics.workers.common
 
 import core.ICorChainDsl
 import handlers.worker
@@ -13,7 +13,7 @@ fun ICorChainDsl<out AbstractContext>.validation(
 ) = worker {
     this.title = title
     on {
-        status == CorStatus.RUNNING
+        status in setOf(CorStatus.RUNNING, CorStatus.FINISHING)
     }
     handle {
         validator.validate(this)

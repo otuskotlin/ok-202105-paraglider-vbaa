@@ -18,7 +18,7 @@ internal fun ICorChainDsl<SchoolContext>.schoolDeleteStub(title: String) = chain
         this.title = "success stub case for delete request"
         on { stubCase == CommonStubCase.SUCCESS }
         handle {
-            responseSchool = SchoolStub.getModel{id = requestSchoolIds.elementAt(0)}
+            responseSchool = SchoolStub.getModel().copy(id = requestSchoolIds.elementAt(0))
             status = CorStatus.FINISHING
         }
     }

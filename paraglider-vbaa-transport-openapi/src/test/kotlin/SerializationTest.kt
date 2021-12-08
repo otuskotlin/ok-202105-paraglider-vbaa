@@ -21,7 +21,7 @@ class SerializationTest {
             location = LocationDTO(
                 address = "Moscow area, Podolsk"
             ),
-            services = setOf(),
+            services = emptySet(),
             instructors = emptySet()
         ),
         debug = BaseDebugRequest(
