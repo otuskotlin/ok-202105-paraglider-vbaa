@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.logging
+package ru.kotlin.paraglider.vbaa.be
 
 import ch.qos.logback.classic.Logger
 import org.slf4j.LoggerFactory

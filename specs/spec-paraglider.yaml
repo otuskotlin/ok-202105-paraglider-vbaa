@@ -813,6 +813,46 @@ components:
             deletedTrip:
               $ref: '#/components/schemas/ResponseTrip'
 
+    MpLogModel:
+      description: Модель логирования
+      allOf:
+        - type: object
+          properties:
+            requestSchoolIdList:
+              type: array
+              items:
+                type: string
+            requestSchool:
+              $ref: '#/components/schemas/ResponseSchool'
+            responseSchool:
+              $ref: '#/components/schemas/ResponseSchool'
+            responseSchools:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResponseSchool'
+
+    CommonLogModel:
+      description: Модель логирования
+      allOf:
+        - type: object
+          properties:
+            messageId:
+              type: string
+            messageTime:
+              type: string
+            logId:
+              type: string
+            source:
+              type: string
+            logModel:
+              $ref: '#/components/schemas/MpLogModel'
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/RequestError'
+
+
+
 
 
 
