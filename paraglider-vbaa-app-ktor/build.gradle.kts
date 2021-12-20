@@ -43,7 +43,7 @@ dependencies {
 
     implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodeinDiVersion")
 
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+//    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
     implementation(kotlin("test-junit"))
@@ -55,6 +55,9 @@ dependencies {
     implementation(project(":paraglider-vbaa-be-repo-inmemory"))
     implementation(project(":paraglider-vbaa-be-repo-cassandra"))
     implementation(project(":paraglider-vbaa-be-repo-test"))
+    // logging
+    implementation(project(":paraglider-vbaa-be-logging"))
+
     implementation(project(":paraglider-vbaa-transport-openapi"))
     implementation(project(":paraglider-vbaa-transport-mapping-openapi"))
 }

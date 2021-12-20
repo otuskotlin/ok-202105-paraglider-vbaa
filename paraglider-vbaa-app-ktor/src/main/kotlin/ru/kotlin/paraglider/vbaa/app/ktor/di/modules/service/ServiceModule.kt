@@ -2,7 +2,6 @@ package ru.kotlin.paraglider.vbaa.app.ktor.di.modules.service
 
 import RepoSchoolInMemory
 import SchoolService
-import io.ktor.util.reflect.*
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance

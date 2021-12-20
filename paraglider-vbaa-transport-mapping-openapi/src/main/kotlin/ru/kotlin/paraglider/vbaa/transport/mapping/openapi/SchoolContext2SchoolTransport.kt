@@ -5,8 +5,23 @@ import ru.kotlin.paraglider.vbaa.be.common.context.SchoolContext
 import ru.kotlin.paraglider.vbaa.be.common.exception.OperationNotSetException
 import ru.kotlin.paraglider.vbaa.be.common.models.*
 import ru.kotlin.paraglider.vbaa.openapi.models.*
+import java.time.Instant
 import java.time.LocalDate
+import java.util.*
 
+fun SchoolContext.toLog(logId: String) = CommonLogModel(
+    messageId = UUID.randomUUID().toString(),
+    messageTime = Instant.now().toString(),
+    source = "paraglider",
+    logId = logId,
+    logModel = MpLogModel(
+        requestSchoolIdList = requestSchoolIds.takeIf { it.isNotEmpty() }?.filter { it != SchoolIdModel.NONE }?.map { it.asString() }?.toList(),
+        requestSchool = requestSchool.takeIf { it != SchoolModel() }?.toTransport(),
+        responseSchool = responseSchool.takeIf { it != SchoolModel() }?.toTransport(),
+        responseSchools = responseSchoolList.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
+    ),
+    errors = errors.takeIf { it.isNotEmpty() }?.map { it.toTransport() },
+)
 
 fun SchoolContext.toInitResponse() = InitSchoolResponse(
     requestId = onRequest.takeIf { it.isNotBlank() },
